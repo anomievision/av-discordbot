@@ -6,7 +6,6 @@
   "main": "./src/index.ts",
   "scripts": {
     "clean": "rm -rf ./dist",
-    "compile": "",
     "dev": "",
     "start": "bun .",
     "lint": "eslint \"src/**/*.ts\"",
@@ -15,7 +14,6 @@
   },
   "dependencies": {
     "@lilybird/handlers": "^0.2.1",
-    "@lilybird/jsx": "^0.2.0",
     "lilybird": "^0.4.0"
   },
   "devDependencies": {
