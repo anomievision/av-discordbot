@@ -1,5 +1,5 @@
 import { ApplicationCommandType } from "lilybird";
-import { SlashCommand } from "@lilybird/handlers";
+import type { SlashCommand } from "@lilybird/handlers";
 
 export default {
     post: "GLOBAL",
@@ -14,7 +14,7 @@ export default {
         const { ws, rest } = await interaction.client.ping();
 
         await interaction.editReply({
-            content: `🏓 WebSocket: \`${ws}ms\` | Rest: \`${rest}ms\``,
+            content: `🏓 WebSocket: \`${ws}ms\` | Rest: \`${rest}ms\``
         });
-    },
+    }
 } satisfies SlashCommand;

@@ -5,12 +5,12 @@ process.on("unhandledRejection", console.error);
 process.on("uncaughtException", console.error);
 
 const listeners = await createHandler({
-  prefix: process.env.PREFIX,
-  dirs: {
-    slashCommands: `${import.meta.dir}/commands/slash`,
-    messageCommands: `${import.meta.dir}/commands/message`,
-    listeners: `${import.meta.dir}/listeners`,
-  },
+    prefix: process.env.PREFIX,
+    dirs: {
+        slashCommands: `${import.meta.dir}/commands/slash`,
+        messageCommands: `${import.meta.dir}/commands/message`,
+        listeners: `${import.meta.dir}/listeners`
+    }
 });
 
 await createClient({
@@ -34,11 +34,11 @@ await createClient({
         Intents.MESSAGE_CONTENT,
         Intents.GUILD_SCHEDULED_EVENTS,
         Intents.AUTO_MODERATION_CONFIGURATION,
-        Intents.AUTO_MODERATION_EXECUTION,
+        Intents.AUTO_MODERATION_EXECUTION
     ],
     ...listeners,
     attachDebugListener: false,
     debugListener: (identifier, payload) => {
         console.log(identifier, payload ?? "");
-    },
+    }
 });
