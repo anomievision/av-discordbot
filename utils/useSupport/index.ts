@@ -3,6 +3,7 @@ import { teamId } from "./ids.js";
 import { getIdsFromLabels, getIdFromPriority } from "./utils.js";
 import { useError, useLogger } from "@utils";
 
+// TODO: Add logger
 export async function useSupportTicket({
     discordId,
     discordUsername,

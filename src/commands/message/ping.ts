@@ -1,5 +1,6 @@
 import type { MessageCommand } from "@lilybird/handlers";
 
+// TODO: Add logger
 export default {
     name: "ping",
     run: async (message) => {

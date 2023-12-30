@@ -6,7 +6,7 @@
   "main": "./src/index.ts",
   "scripts": {
     "clean": "rm -rf ./dist",
-    "dev": "",
+    "dev": "bun ./ci.ts --watch",
     "start": "bun .",
     "lint": "eslint \"src/**/*.ts\"",
     "check": "eslint \"src/**/*.ts\" --fix",

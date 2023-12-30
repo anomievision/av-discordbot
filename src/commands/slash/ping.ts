@@ -1,6 +1,7 @@
 import { ApplicationCommandType } from "lilybird";
 import type { SlashCommand } from "@lilybird/handlers";
 
+// TODO: Add logger
 export default {
     post: "GLOBAL",
     data: {

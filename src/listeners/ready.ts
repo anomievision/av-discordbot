@@ -1,6 +1,7 @@
 import { useLogger } from "@utils";
 import type { Event } from "@lilybird/handlers";
 
+// TODO: Add logger
 export default {
     event: "ready",
     run: async (client) => {
