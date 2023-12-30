@@ -562,7 +562,7 @@
         "@stylistic/max-len": [
             "error",
             {
-                "code": 210
+                "code": 280
             }
         ],
         "@stylistic/max-statements-per-line": [
