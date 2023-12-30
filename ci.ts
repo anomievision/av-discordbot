@@ -1,9 +1,11 @@
+import { readableStreamToText } from "bun";
 import { watch } from "node:fs";
-import { rm } from "node:fs/promises";
-import type { FSWatcher } from "node:fs";
+import { mkdir, rm } from "node:fs/promises";
 
 const PID_FILE = `${import.meta.dir}/pid`;
 const WATCH_DIR = `${import.meta.dir}/src`;
+
+// ---------------------------------------------------
 
 async function start(): Promise<void> {
     const proc = Bun.spawn(["bun", "start"]);
@@ -27,12 +29,12 @@ async function restart(): Promise<void> {
     await start();
 }
 
-async function startWatcher(): Promise<FSWatcher> {
+async function startWatcher(): Promise<void> {
     console.log(`Starting watcher on dir: ${WATCH_DIR}...`);
 
     await start();
 
-    return watch(
+    const watcher = watch(
         WATCH_DIR,
         { recursive: true },
         async (event, filename) => {
@@ -40,15 +42,58 @@ async function startWatcher(): Promise<FSWatcher> {
             await restart();
         }
     );
+
+    process.on("SIGINT", async () => {
+        console.log("Stopping watcher...");
+        watcher.close();
+
+        await rm(PID_FILE);
+
+        process.exit(0);
+    });
 }
 
-const watcher = await startWatcher();
+// ---------------------------------------------------
 
-process.on("SIGINT", async () => {
-    console.log("Stopping watcher...");
-    watcher.close();
+async function generateMigrations(): Promise<void> {
+    const targetMigrationDir = "database/migrations/20230000000000_init_discord";
 
-    await rm(PID_FILE);
+    await rm(targetMigrationDir, { recursive: true, force: true });
+    await mkdir(targetMigrationDir, { recursive: true });
 
-    process.exit(0);
-});
+    const { stdout, stderr } = Bun.spawn([
+        "bunx",
+        "prisma",
+        "migrate",
+        "diff",
+        "--from-empty",
+        "--to-schema-datamodel",
+        "database/schema.prisma",
+        "--script"
+    ]);
+
+    const output = await readableStreamToText(stdout);
+    await Bun.write("database/migrations/20230000000000_init_discord/migration.sql", output);
+
+    console.log("Generated initial migration");
+}
+
+// ---------------------------------------------------
+
+(async () => {
+    if (process.argv.length > 2) {
+        switch (process.argv[2]) {
+            case "-w":
+            case "--watch":
+                await startWatcher();
+                break;
+            case "-g":
+            case "--generate":
+                await generateMigrations();
+                break;
+            default:
+                console.log("Invalid argument");
+                break;
+        }
+    }
+})();
