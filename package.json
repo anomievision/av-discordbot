@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@lilybird/handlers": "^0.2.1",
+    "@linear/sdk": "^13.0.0",
     "lilybird": "^0.4.0",
     "tasai": "^0.1.0"
   },

@@ -1,4 +1,4 @@
-import { useLogger } from "utils/useLogger.js";
+import { useLogger } from "@utils";
 import type { Event } from "@lilybird/handlers";
 
 export default {
