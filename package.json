@@ -10,13 +10,15 @@
     "start": "bun .",
     "lint": "eslint \"src/**/*.ts\"",
     "check": "eslint \"src/**/*.ts\" --fix",
-    "postinstall": ""
+    "postinstall": "bun prepare:prisma",
+    "prepare:prisma": "prisma generate"
   },
   "dependencies": {
     "@lilybird/handlers": "^0.2.1",
     "lilybird": "^0.4.0"
   },
   "devDependencies": {
+    "@prisma/client": "^5.7.1",
     "@stylistic/eslint-plugin": "^1.5.1",
     "@typescript-eslint/eslint-plugin": "^6.16.0",
     "@typescript-eslint/parser": "^6.16.0",
@@ -24,6 +26,10 @@
     "eslint": "^8.56.0",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.29.1",
+    "prisma": "^5.7.1",
     "typescript": "^5.3.3"
+  },
+  "prisma": {
+    "schema": "database/schema.prisma"
   }
 }

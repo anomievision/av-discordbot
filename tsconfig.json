@@ -12,8 +12,24 @@
         ]
     },
     "include": [
+        "constants/**/*",
+        "database/**/*",
         "src/**/*",
         "utils/**/*",
         "ci.ts"
-    ]
+    ],
+    "paths": {
+        "@constants/*": [
+            "./constants/*"
+        ],
+        "@database": [
+            "./src/database/index.ts"
+        ],
+        "@types/*": [
+            "./types/*"
+        ],
+        "@utils": [
+            "./utils/index.ts"
+        ]
+    },
 }
