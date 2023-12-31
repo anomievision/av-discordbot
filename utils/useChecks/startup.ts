@@ -24,7 +24,7 @@ async function checkDatabaseConnection(): Promise<{ status: "pass" | "fail", err
 }
 
 // TODO: Add logger
-export async function startupTasks(): Promise<void> {
+export async function useStartupChecks(): Promise<void> {
     const envs = checkEnvs();
     if (envs.status === "fail")
         throw new Error(envs.error);

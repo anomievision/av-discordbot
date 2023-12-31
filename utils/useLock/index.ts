@@ -17,7 +17,7 @@ export async function removeLock(): Promise<void> {
 }
 
 // TODO: Add logger
-export async function getLock(): Promise<Lockfile> {
+export async function useLock(): Promise<Lockfile> {
     const lock = await Bun.file(LOCK_FILE).json() as Lockfile;
 
     return lock;

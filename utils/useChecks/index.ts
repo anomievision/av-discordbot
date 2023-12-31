@@ -1,2 +1,2 @@
-export { exitTasks } from "./exit.js";
-export { startupTasks } from "./startup.js";
+export { useExitChecks } from "./exit.js";
+export { useStartupChecks } from "./startup.js";

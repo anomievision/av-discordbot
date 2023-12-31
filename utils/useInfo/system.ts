@@ -1,4 +1,4 @@
-import { getLock } from "@utils";
+import { useLock } from "@utils";
 import { cpus } from "node:os";
 
 export function getCpuUsage(): string {
@@ -18,7 +18,7 @@ export function getMemoryUsage(): string {
 }
 
 export async function getUptime(): Promise<string> {
-    const lock = await getLock();
+    const lock = await useLock();
     const uptime = lock.started;
 
     const started = new Date(uptime).getTime();

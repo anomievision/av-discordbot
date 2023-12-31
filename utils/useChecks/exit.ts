@@ -11,7 +11,7 @@ async function closeDatabaseConnection(): Promise<{ status: "pass" | "fail", err
 }
 
 // TODO: Add logger
-export async function exitTasks(): Promise<void> {
+export async function useExitChecks(): Promise<void> {
     const db = await closeDatabaseConnection();
     if (db.status === "fail")
         throw new Error(db.error);
