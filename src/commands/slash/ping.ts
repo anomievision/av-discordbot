@@ -10,7 +10,7 @@ export default {
         description: "Get the bot's ping."
     },
     run: async (interaction) => {
-        await interaction.deferReply();
+        await interaction.deferReply(true);
 
         const { ws, rest } = await interaction.client.ping();
 
