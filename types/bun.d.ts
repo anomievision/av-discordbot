@@ -9,6 +9,9 @@ declare module "bun" {
         LOGGING_ENABLED: string
         LOGGING_CONSOLE_ENABLED: string
         LOGGING_DATABASE_ENABLED: string
+        SUPABASE_URL: string
+        SUPABASE_KEY: string
+        SUPABASE_SERVICE_KEY: string
     }
 
     interface BunFile extends Blob {

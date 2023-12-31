@@ -1,8 +1,8 @@
-import { prismaClient } from "@database";
+import { usePrismaClient } from "@utils";
 import type { EmbedStructure } from "lilybird";
 
 export async function getEmbedsFromDatabase(): Promise<Array<EmbedStructureWithId>> {
-    const _embeds = await prismaClient.embed.findMany();
+    const _embeds = await usePrismaClient.embed.findMany();
 
     const embeds = _embeds.map((embed) => {
         const _fields = embed.fields as unknown as Array<EmbedStructure>;

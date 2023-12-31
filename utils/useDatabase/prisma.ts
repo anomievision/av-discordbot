@@ -1,8 +1,5 @@
 import { PrismaClient } from "@prisma/client";
 
-/**
- * Represents the Prisma Client instance.
- */
 class PrismaService {
     private static _instance: PrismaService | null = null;
     private readonly _prisma: PrismaClient<{
@@ -24,10 +21,6 @@ class PrismaService {
                 }>
     }>;
 
-    /**
-     * Private constructor to create a new instance of PrismaService.
-     * Initializes the PrismaClient with appropriate logging based on the environment.
-     */
     private constructor() {
         this._prisma = new PrismaClient({
             log:
@@ -50,11 +43,6 @@ class PrismaService {
         }
     }
 
-    /**
-     * Gets the singleton instance of PrismaService.
-     *
-     * @returns The PrismaService instance.
-     */
     public static getInstance(): PrismaService {
         if (!PrismaService._instance)
             PrismaService._instance = new PrismaService();
@@ -62,11 +50,6 @@ class PrismaService {
         return PrismaService._instance;
     }
 
-    /**
-     * Gets the PrismaClient instance from the PrismaService.
-     *
-     * @returns The PrismaClient instance.
-     */
     public get prisma(): PrismaClient {
         return this._prisma;
     }
@@ -74,7 +57,4 @@ class PrismaService {
 
 const prismaService = PrismaService.getInstance();
 
-/**
- * The PrismaClient instance.
- */
-export const prismaClient = prismaService.prisma;
+export const usePrismaClient = prismaService.prisma;
