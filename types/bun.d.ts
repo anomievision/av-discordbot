@@ -10,4 +10,8 @@ declare module "bun" {
         LOGGING_CONSOLE_ENABLED: string
         LOGGING_DATABASE_ENABLED: string
     }
+
+    interface BunFile extends Blob {
+        json(): Promise<unknown>
+    }
 }

@@ -11,25 +11,64 @@ datasource db {
   schemas   = ["discord"]
 }
 
+enum embed_type {
+  rich
+  image
+  video
+  gifv
+  article
+  link
+
+  @@schema("discord")
+}
+
 model embed {
-  id        String   @id @unique @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  payload   Json
-  created_at DateTime @default(now()) @db.Timestamptz(6)
-  updated_at DateTime @default(now()) @db.Timestamptz(6)
+  id         String      @id @unique @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  discord_embed_id String?
+  title      String?
+  type       embed_type?
+  description String?
+  url        String?
+  timestamp  String?
+  color      Int?
+  footer_text String?
+  footer_icon_url String?
+  footer_proxy_icon_url String?
+  image_url String?
+  image_proxy_url String?
+  image_height Int?
+  image_width Int?
+  thumbnail_url String?
+  thumbnail_proxy_url String?
+  thumbnail_height Int?
+  thumbnail_width Int?
+  video_url String?
+  video_proxy_url String?
+  video_height Int?
+  video_width Int?
+  provider_name String?
+  provider_url String?
+  author_name String?
+  author_url String?
+  author_icon_url String?
+  author_proxy_icon_url String?
+  fields     Json?
+  created_at DateTime    @default(now()) @db.Timestamptz(6)
+  updated_at DateTime    @default(now()) @db.Timestamptz(6)
 
   @@schema("discord")
 }
 
 model log {
-  id        String   @id @unique @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  payload   Json
+  id         String   @id @unique @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  payload    Json
   created_at DateTime @default(now()) @db.Timestamptz(6)
-  
+
   @@schema("discord")
 }
 
 model user {
-  id        String   @id @unique @db.Uuid
+  id         String   @id @unique @db.Uuid
   created_at DateTime @default(now()) @db.Timestamptz(6)
   updated_at DateTime @default(now()) @db.Timestamptz(6)
 

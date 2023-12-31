@@ -9,6 +9,8 @@
         "types": [
             "bun-types",
             "./types/bun.d.ts",
+            "./types/lilybird.d.ts",
+            "./types/lock.d.ts",
             "./types/logger.d.ts",
             "./types/support.d.ts",
         ],
