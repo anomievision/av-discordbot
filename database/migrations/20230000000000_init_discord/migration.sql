@@ -7,7 +7,8 @@ CREATE TYPE "discord"."embed_type" AS ENUM ('rich', 'image', 'video', 'gifv', 'a
 -- CreateTable
 CREATE TABLE "discord"."embed" (
     "id" UUID NOT NULL DEFAULT uuid_generate_v4(),
-    "discord_embed_id" TEXT,
+    "channel_id" TEXT,
+    "message_id" TEXT,
     "title" TEXT,
     "type" "discord"."embed_type",
     "description" TEXT,
