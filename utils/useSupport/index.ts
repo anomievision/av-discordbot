@@ -3,7 +3,6 @@ import { teamId } from "./ids.js";
 import { getIdsFromLabels, getIdFromPriority } from "./utils.js";
 import { useError, useLogger } from "#utils";
 
-// TODO: Add logger
 export async function useSupportTicket({
     discordId,
     discordUsername,
@@ -26,16 +25,18 @@ export async function useSupportTicket({
         });
 
         if (!_issue.success)
-            await useLogger("error", "discord::support::ticket", "Issue was not created");
+            await useLogger("error", "support::ticket", "Issue was not created");
 
         const issue: Support.Ticket.Response = {
             referenceId: (await _issue.issue)?.id,
             success: true
         };
 
+        await useLogger("info", "support::ticket", `Issue created with referenceId: ${issue.referenceId}`);
+
         return { data: issue, error: undefined };
     } catch (error) {
-        await useLogger("error", "discord::support::ticket", JSON.stringify(error));
+        await useLogger("error", "support::ticket", JSON.stringify(error));
         return { data: null, error: useError(error) };
     }
 }

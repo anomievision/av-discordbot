@@ -1,3 +1,4 @@
+import { useLogger } from "#utils";
 import { ApplicationCommandType } from "lilybird";
 import type { SlashCommand } from "@lilybird/handlers";
 
@@ -15,5 +16,11 @@ export default {
         await interaction.editReply({
             content: ""
         });
+
+        await useLogger(
+            "info",
+            "command::interaction",
+            `Guild: ${interaction.data.guildId} | Channel: ${interaction.data.targetId} | User: ${interaction.message} | Command: /${interaction.data.name}`
+        );
     }
 } satisfies SlashCommand;

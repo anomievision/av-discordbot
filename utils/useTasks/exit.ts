@@ -1,4 +1,4 @@
-import { usePrismaClient } from "#utils";
+import { useLogger, usePrismaClient } from "#utils";
 
 async function closeDatabaseConnection(): Promise<{ status: "pass" | "fail", error?: string }> {
     const db = await usePrismaClient.$disconnect().then(() => {
@@ -7,12 +7,15 @@ async function closeDatabaseConnection(): Promise<{ status: "pass" | "fail", err
         return { status: "fail" as const, error: error.message };
     });
 
+    await useLogger("info", "exit", "Closed database connection");
+
     return db;
 }
 
-// TODO: Add logger
 export async function useExitTasks(): Promise<void> {
     const db = await closeDatabaseConnection();
     if (db.status === "fail")
         throw new Error(db.error);
+
+    await useLogger("info", "exit", "Exiting process");
 }

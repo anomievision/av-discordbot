@@ -1,6 +1,6 @@
-import { usePrismaClient } from "#utils";
+import { useLogger, usePrismaClient } from "#utils";
 
-function checkEnvs(): { status: "pass" | "fail", error?: string } {
+async function checkEnvs(): Promise<{ status: "pass" | "fail", error?: string }> {
     const envs = Object.keys(process.env);
     const unsetEnvs = envs.filter((env) => process.env[env] === undefined);
     if (unsetEnvs.length > 0) {
@@ -9,6 +9,8 @@ function checkEnvs(): { status: "pass" | "fail", error?: string } {
             error: `Required environment variables are not set: ${unsetEnvs.join(", ")}`
         };
     }
+
+    await useLogger("info", "startup", "All required environment variables are set");
 
     return { status: "pass" };
 }
@@ -20,16 +22,19 @@ async function checkDatabaseConnection(): Promise<{ status: "pass" | "fail", err
         return { status: "fail" as const, error: error.message };
     });
 
+    await useLogger("info", "startup", "Connected to database");
+
     return db;
 }
 
-// TODO: Add logger
 export async function useStartupTasks(): Promise<void> {
-    const envs = checkEnvs();
+    const envs = await checkEnvs();
     if (envs.status === "fail")
         throw new Error(envs.error);
 
     const db = await checkDatabaseConnection();
     if (db.status === "fail")
         throw new Error(db.error);
+
+    await useLogger("info", "startup", "Startup tasks completed");
 }

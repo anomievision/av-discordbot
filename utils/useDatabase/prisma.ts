@@ -24,7 +24,7 @@ class PrismaService {
     private constructor() {
         this._prisma = new PrismaClient({
             log:
-                process.env.NODE_ENV === "development"
+                process.env.NODE_ENV === "disable"
                     ? [
                         { emit: "event", level: "query" },
                         { emit: "stdout", level: "error" },
@@ -34,7 +34,7 @@ class PrismaService {
                     : []
         });
 
-        if (process.env.NODE_ENV === "development") {
+        if (process.env.NODE_ENV === "disable") {
             this._prisma.$on("query", (_event: any) => {
                 // consola("log", "Query: " + event.query);
                 // consola("log", "Params: " + event.params);
