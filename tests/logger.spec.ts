@@ -1,4 +1,4 @@
-import { useLogger } from "@utils";
+import { useLogger } from "#utils";
 import { describe, test } from "bun:test";
 
 describe(

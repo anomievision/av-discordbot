@@ -61,7 +61,7 @@ async function generateMigrations(): Promise<void> {
     await rm(targetMigrationDir, { recursive: true, force: true });
     await mkdir(targetMigrationDir, { recursive: true });
 
-    const { stdout, stderr } = Bun.spawn([
+    const { stdout } = Bun.spawn([
         "bunx",
         "prisma",
         "migrate",

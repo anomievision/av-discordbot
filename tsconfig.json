@@ -15,13 +15,13 @@
             "./types/support.d.ts",
         ],
         "paths": {
-            "@constants/*": [
+            "#constants/*": [
                 "./constants/*"
             ],
-            "@database": [
+            "#database": [
                 "./database/index.ts"
             ],
-            "@utils": [
+            "#utils": [
                 "./utils/index.ts"
             ]
         },

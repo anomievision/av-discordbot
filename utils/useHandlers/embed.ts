@@ -1,4 +1,4 @@
-import { usePrismaClient } from "@utils";
+import { usePrismaClient } from "#utils";
 import type { EmbedStructure } from "lilybird";
 
 export async function getEmbedsFromDatabase(): Promise<Array<EmbedStructureWithId>> {

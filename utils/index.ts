@@ -1,4 +1,4 @@
-export { useExitChecks, useStartupChecks } from "./useChecks/index.js";
+export { useExitTasks, useStartupTasks } from "./useTasks/index.js";
 export { usePrismaClient, useSupabaseClient } from "./useDatabase/index.js";
 export { useError } from "./useError/index.js";
 export { getCpuUsage, getMemoryUsage, getUptime, getVersion } from "./useInfo/index.js";

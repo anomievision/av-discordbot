@@ -8,8 +8,8 @@
     "clean": "rm -rf ./dist",
     "dev": "bun ./ci.ts --watch",
     "start": "bun .",
-    "lint": "eslint \"src/**/*.ts\"",
-    "check": "eslint \"src/**/*.ts\" --fix",
+    "lint": "eslint \"**/*.ts\"",
+    "check": "eslint \"**/*.ts\" --fix",
     "postinstall": "bun prepare:prisma",
     "prepare:prisma": "prisma generate"
   },

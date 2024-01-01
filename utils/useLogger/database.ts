@@ -1,5 +1,4 @@
-import { prismaClient } from "@database";
-import { useLogger } from "@utils";
+import { useLogger, usePrismaClient } from "#utils";
 import {
     parseUsing24BitColors
 } from "tasai";
@@ -16,7 +15,7 @@ export async function pushToDatabase(payload: Logger.Payload): Promise<void> {
 
         _payload.message = stripColors(payload.message);
 
-        await prismaClient.log.create({
+        await usePrismaClient.log.create({
             data: {
                 payload: JSON.stringify(_payload)
             }

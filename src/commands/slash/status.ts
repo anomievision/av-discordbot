@@ -1,5 +1,5 @@
 
-import { getCpuUsage, getMemoryUsage, getUptime, getVersion } from "@utils";
+import { getCpuUsage, getMemoryUsage, getUptime, getVersion } from "#utils";
 import { ApplicationCommandType } from "lilybird";
 import type { EmbedStructure, EmbedType } from "lilybird";
 import type { SlashCommand } from "@lilybird/handlers";

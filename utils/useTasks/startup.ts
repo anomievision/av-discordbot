@@ -1,4 +1,4 @@
-import { prismaClient } from "@database";
+import { usePrismaClient } from "#utils";
 
 function checkEnvs(): { status: "pass" | "fail", error?: string } {
     const envs = Object.keys(process.env);
@@ -14,7 +14,7 @@ function checkEnvs(): { status: "pass" | "fail", error?: string } {
 }
 
 async function checkDatabaseConnection(): Promise<{ status: "pass" | "fail", error?: string }> {
-    const db = await prismaClient.$connect().then(() => {
+    const db = await usePrismaClient.$connect().then(() => {
         return { status: "pass" as const };
     }).catch((error: { message: string }) => {
         return { status: "fail" as const, error: error.message };
@@ -24,7 +24,7 @@ async function checkDatabaseConnection(): Promise<{ status: "pass" | "fail", err
 }
 
 // TODO: Add logger
-export async function useStartupChecks(): Promise<void> {
+export async function useStartupTasks(): Promise<void> {
     const envs = checkEnvs();
     if (envs.status === "fail")
         throw new Error(envs.error);

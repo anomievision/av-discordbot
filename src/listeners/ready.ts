@@ -1,4 +1,4 @@
-import { useLogger } from "@utils";
+import { useLogger } from "#utils";
 import type { Event } from "@lilybird/handlers";
 
 // TODO: Add logger

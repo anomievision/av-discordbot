@@ -1,4 +1,4 @@
-import { useLock } from "@utils";
+import { useLock } from "#utils";
 import { cpus } from "node:os";
 
 export function getCpuUsage(): string {
@@ -13,7 +13,7 @@ export function getCpuUsage(): string {
 
 export function getMemoryUsage(): string {
     const { heapUsed, heapTotal } = process.memoryUsage();
-    const percentage = Math.round((heapUsed / heapTotal) * 100);
+    const percentage = Math.round(heapUsed / heapTotal * 100);
     return `${percentage.toFixed(2)}%`;
 }
 
@@ -26,9 +26,9 @@ export async function getUptime(): Promise<string> {
     const difference = now - started;
 
     const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((difference / 1000 / 60) % 60);
-    const seconds = Math.floor((difference / 1000) % 60);
+    const hours = Math.floor(difference / (1000 * 60 * 60) % 24);
+    const minutes = Math.floor(difference / 1000 / 60 % 60);
+    const seconds = Math.floor(difference / 1000 % 60);
 
     return `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
 }
