@@ -1,8 +1,8 @@
 import { createClient, Intents } from "lilybird";
 import { createHandler } from "@lilybird/handlers";
-import type { ClientOptions } from "lilybird";
+import type { Client, ClientOptions } from "lilybird";
 
-export async function startClient(): Promise<void> {
+export async function startClient(): Promise<Client> {
     const listeners = await createHandler({
         prefix: process.env.PREFIX,
         dirs: {
@@ -42,5 +42,7 @@ export async function startClient(): Promise<void> {
         }
     };
 
-    await createClient(clientOptions);
+    const client = await createClient(clientOptions);
+
+    return client;
 }
