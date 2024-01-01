@@ -13,6 +13,8 @@ export default {
         description: "Get the status of the bot"
     },
     run: async (interaction) => {
+        await interaction.deferReply(true);
+
         const embed: EmbedStructure = {
             title: "Status",
             type: "rich" as EmbedType,
@@ -37,8 +39,6 @@ export default {
                 }
             ]
         };
-
-        await interaction.deferReply(true);
 
         await interaction.editReply({ embeds: [embed] });
     }

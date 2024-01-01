@@ -1,4 +1,5 @@
 import { ApplicationCommandType } from "lilybird";
+import type { EmbedStructure, EmbedType } from "lilybird";
 import type { SlashCommand } from "@lilybird/handlers";
 
 // TODO: Add logger
@@ -14,8 +15,14 @@ export default {
 
         const { ws, rest } = await interaction.client.ping();
 
+        const embed: EmbedStructure = {
+            type: "rich" as EmbedType,
+            color: 2829617,
+            description: `🏓 WebSocket: \`${ws}ms\` | Rest: \`${rest}ms\``
+        };
+
         await interaction.editReply({
-            content: `🏓 WebSocket: \`${ws}ms\` | Rest: \`${rest}ms\``
+            embeds: [embed]
         });
     }
 } satisfies SlashCommand;

@@ -11,6 +11,8 @@ export default {
         description: "Get information about the bot."
     },
     run: async (interaction) => {
+        await interaction.deferReply(true);
+
         const embed: EmbedStructure = {
             title: "Hello, let me introduce myself!",
             type: "rich" as EmbedType,
@@ -23,8 +25,6 @@ export default {
             Made with ❤️ by <@311186670429011968>, using [Lilybird](<https://lilybird.didas.dev/>)
             `
         };
-
-        await interaction.deferReply(true);
 
         await interaction.editReply({ embeds: [embed] });
     }
