@@ -11,7 +11,6 @@ await startClient();
 await useScheduledTasks();
 
 process.on("SIGINT", async () => {
-    console.log("Stopping bot...");
     await useExitTasks();
     await removeLock();
 

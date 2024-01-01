@@ -1,4 +1,4 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 type SupabaseClientDiscord = SupabaseClient<any, "private", any>;
@@ -8,7 +8,7 @@ class SupabaseService {
     private readonly _supabase: SupabaseClientDiscord;
 
     private constructor() {
-        this._supabase = createClient(
+        this._supabase = createSupabaseClient(
             process.env.SUPABASE_URL,
             process.env.SUPABASE_SERVICE_KEY,
             {

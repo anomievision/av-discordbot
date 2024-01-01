@@ -11,23 +11,11 @@ datasource db {
   schemas   = ["discord"]
 }
 
-enum embed_type {
-  rich
-  image
-  video
-  gifv
-  article
-  link
-
-  @@schema("discord")
-}
-
 model embed {
   id         String      @id @unique @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   channel_id String?
   message_id String?
   title      String?
-  type       embed_type?
   description String?
   url        String?
   timestamp  String?

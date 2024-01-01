@@ -1,7 +1,7 @@
 
 import { getCpuUsage, getMemoryUsage, getUptime, getVersion, useLogger } from "#utils";
 import { ApplicationCommandType } from "lilybird";
-import type { EmbedStructure, EmbedType } from "lilybird";
+import type { EmbedStructure } from "lilybird";
 import type { SlashCommand } from "@lilybird/handlers";
 
 // TODO: Add logger
@@ -13,12 +13,9 @@ export default {
         description: "Get the status of the bot"
     },
     run: async (interaction) => {
-        await interaction.deferReply(true);
-
         const embed: EmbedStructure = {
             title: "Status",
-            type: "rich" as EmbedType,
-            color: 2829617,
+            color: 0x2b2d31,
             description: "",
             fields: [
                 {
@@ -40,7 +37,7 @@ export default {
             ]
         };
 
-        await interaction.editReply({ embeds: [embed] });
+        await interaction.reply({ embeds: [embed], ephemeral: true });
 
         await useLogger(
             "info",

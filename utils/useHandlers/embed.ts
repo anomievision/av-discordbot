@@ -12,7 +12,6 @@ export async function getEmbedsFromDatabase(): Promise<Array<EmbedStructureWithI
             channel_id: embed.channel_id,
             message_id: embed.message_id,
             title: embed.title,
-            type: embed.type,
             description: embed.description,
             url: embed.url,
             timestamp: embed.timestamp,

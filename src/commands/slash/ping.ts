@@ -1,9 +1,8 @@
 import { useLogger } from "#utils";
 import { ApplicationCommandType } from "lilybird";
-import type { EmbedStructure, EmbedType } from "lilybird";
+import type { EmbedStructure } from "lilybird";
 import type { SlashCommand } from "@lilybird/handlers";
 
-// TODO: Add logger
 export default {
     post: "GLOBAL",
     data: {
@@ -17,8 +16,7 @@ export default {
         const { ws, rest } = await interaction.client.ping();
 
         const embed: EmbedStructure = {
-            type: "rich" as EmbedType,
-            color: 2829617,
+            color: 0x2b2d31,
             description: `🏓 WebSocket: \`${ws}ms\` | Rest: \`${rest}ms\``
         };
 

@@ -1,6 +1,6 @@
 import { useLogger } from "#utils";
 import { ApplicationCommandType } from "lilybird";
-import type { EmbedStructure, EmbedType } from "lilybird";
+import type { EmbedStructure } from "lilybird";
 import type { SlashCommand } from "@lilybird/handlers";
 
 // TODO: Add logger
@@ -12,12 +12,9 @@ export default {
         description: "Get information about the bot."
     },
     run: async (interaction) => {
-        await interaction.deferReply(true);
-
         const embed: EmbedStructure = {
             title: "Hello, let me introduce myself!",
-            type: "rich" as EmbedType,
-            color: 2829617,
+            color: 0x2b2d31,
             description: `
             I am a unique Discord enchantment, conjured to weave the threads of magic through your server. My purpose? To assist in an array of mystical tasks, unveiling secrets and bestowing upon you the tools of ancient wisdom.
 
@@ -27,7 +24,7 @@ export default {
             `
         };
 
-        await interaction.editReply({ embeds: [embed] });
+        await interaction.reply({ embeds: [embed], ephemeral: true });
 
         await useLogger(
             "info",

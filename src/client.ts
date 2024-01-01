@@ -1,5 +1,6 @@
 import { createClient, Intents } from "lilybird";
 import { createHandler } from "@lilybird/handlers";
+import type { ClientOptions } from "lilybird";
 
 export async function startClient(): Promise<void> {
     const listeners = await createHandler({
@@ -11,7 +12,7 @@ export async function startClient(): Promise<void> {
         }
     });
 
-    await createClient({
+    const clientOptions: ClientOptions = {
         token: process.env.TOKEN,
         intents: [
             Intents.GUILDS,
@@ -39,5 +40,7 @@ export async function startClient(): Promise<void> {
         debugListener: (identifier, payload) => {
             console.log(identifier, payload ?? "");
         }
-    });
+    };
+
+    await createClient(clientOptions);
 }

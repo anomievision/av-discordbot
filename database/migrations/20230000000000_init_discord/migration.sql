@@ -1,16 +1,12 @@
 -- CreateSchema
 CREATE SCHEMA IF NOT EXISTS "discord";
 
--- CreateEnum
-CREATE TYPE "discord"."embed_type" AS ENUM ('rich', 'image', 'video', 'gifv', 'article', 'link');
-
 -- CreateTable
 CREATE TABLE "discord"."embed" (
     "id" UUID NOT NULL DEFAULT uuid_generate_v4(),
     "channel_id" TEXT,
     "message_id" TEXT,
     "title" TEXT,
-    "type" "discord"."embed_type",
     "description" TEXT,
     "url" TEXT,
     "timestamp" TEXT,
