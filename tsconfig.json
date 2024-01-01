@@ -9,6 +9,7 @@
         "types": [
             "bun-types",
             "./types/bun.d.ts",
+            "./types/database.d.ts",
             "./types/lilybird.d.ts",
             "./types/lock.d.ts",
             "./types/logger.d.ts",
@@ -18,9 +19,6 @@
             "#constants/*": [
                 "./constants/*"
             ],
-            "#database": [
-                "./database/index.ts"
-            ],
             "#utils": [
                 "./utils/index.ts"
             ]
@@ -28,7 +26,6 @@
     },
     "include": [
         "constants/**/*",
-        "database/**/*",
         "src/**/*",
         "tests/**/*",
         "utils/**/*",

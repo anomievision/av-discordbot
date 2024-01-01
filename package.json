@@ -10,16 +10,15 @@
     "start": "bun .",
     "lint": "eslint \"**/*.ts\"",
     "check": "eslint \"**/*.ts\" --fix",
-    "postinstall": "bun prepare:prisma",
-    "prepare:prisma": "prisma generate"
+    "postinstall": "",
+    "supabase:gen-types": "bunx supabase gen types typescript --db-url 'postgresql://postgres:postgres@127.0.0.1:54322/postgres' --schema public,discord > types/supabase.d.ts"
   },
   "dependencies": {
     "@lilybird/handlers": "^0.2.1",
     "@linear/sdk": "^13.0.0",
-    "@prisma/client": "^5.7.1",
     "@supabase/supabase-js": "^2.39.1",
     "lilybird": "^0.4.1",
-    "prisma": "^5.7.1",
+    "postgres": "^3.4.3",
     "tasai": "^0.1.0"
   },
   "devDependencies": {
@@ -31,8 +30,5 @@
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.29.1",
     "typescript": "^5.3.3"
-  },
-  "prisma": {
-    "schema": "database/schema.prisma"
   }
 }

@@ -1,4 +1,4 @@
-import { useLogger, usePrismaClient } from "#utils";
+import { useLogger, useSupabaseServiceClient } from "#utils";
 import {
     parseUsing24BitColors
 } from "tasai";
@@ -15,11 +15,16 @@ export async function pushToDatabase(payload: Logger.Payload): Promise<void> {
 
         _payload.message = stripColors(payload.message);
 
-        await usePrismaClient.log.create({
-            data: {
+        const { error } = await useSupabaseServiceClient()
+            .schema("discord")
+            .from("log")
+            .insert({
                 payload: JSON.stringify(_payload)
-            }
-        });
+            })
+            .select();
+
+        if (error)
+            throw new Error(error.message);
     } catch (error) {
         await useLogger("error", "Failed logging to Database.", JSON.stringify(error));
     }

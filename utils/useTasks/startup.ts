@@ -1,4 +1,4 @@
-import { useLogger, usePrismaClient } from "#utils";
+import { useLogger, useSupabaseServiceClient } from "#utils";
 
 async function checkEnvs(): Promise<{ status: "pass" | "fail", error?: string }> {
     const envs = Object.keys(process.env);
@@ -16,15 +16,21 @@ async function checkEnvs(): Promise<{ status: "pass" | "fail", error?: string }>
 }
 
 async function checkDatabaseConnection(): Promise<{ status: "pass" | "fail", error?: string }> {
-    const db = await usePrismaClient.$connect().then(() => {
-        return { status: "pass" as const };
-    }).catch((error: { message: string }) => {
-        return { status: "fail" as const, error: error.message };
-    });
+    const { error } = await useSupabaseServiceClient()
+        .schema("discord")
+        .from("log")
+        .select("id");
+
+    if (error !== null) {
+        return {
+            status: "fail",
+            error: "Failed to connect to database"
+        };
+    }
 
     await useLogger("info", "startup", "Connected to database");
 
-    return db;
+    return { status: "pass" };
 }
 
 export async function useStartupTasks(): Promise<void> {
