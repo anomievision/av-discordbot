@@ -8,4 +8,3 @@ export function useCamelToSnakeCase<T extends Record<string, any>>(object: T): C
 export function useSnakeToCamelCase<T extends Record<string, any>>(object: T): SnakeToCamelCaseNested<T> {
     return camelcaseKeys(object) as unknown as SnakeToCamelCaseNested<T>;
 }
-

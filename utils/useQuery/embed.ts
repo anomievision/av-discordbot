@@ -29,8 +29,8 @@ export async function useQueryCreateEmbed(
         updatedAt,
         url,
         videoHeight
-    }: SnakeToCamelCaseNested<InsertEmbed>
-): Promise<SnakeToCamelCaseNested<SelectEmbed> | string> {
+    }: InsertEmbed
+): Promise<SelectEmbed | string> {
     const { data, error } = await useSupabaseServiceClient()
         .schema("discord")
         .from("embed")
@@ -67,7 +67,7 @@ export async function useQueryCreateEmbed(
             }
         ])
         .select()
-        .returns<SelectEmbed>();
+        .returns<Database.SelectEmbed>();
 
     if (error) {
         await useLogger("error", "embed:create", "Failed to create embed in database");
@@ -109,8 +109,8 @@ export async function useQueryUpdateEmbed(
         updatedAt,
         url,
         videoHeight
-    }: SnakeToCamelCaseNested<UpdateEmbed>
-): Promise<SnakeToCamelCaseNested<SelectEmbed> | string> {
+    }: UpdateEmbed
+): Promise<SelectEmbed | string> {
     const { data, error } = await useSupabaseServiceClient()
         .schema("discord")
         .from("embed")
@@ -146,7 +146,7 @@ export async function useQueryUpdateEmbed(
         .eq("channel_id", channelId)
         .eq("message_id", messageId)
         .select()
-        .returns<SelectEmbed>();
+        .returns<Database.SelectEmbed>();
 
     if (error) {
         await useLogger("error", "embed:update", "Failed to update embed in database");
@@ -174,14 +174,14 @@ export async function useQueryDeleteEmbed(channelId: string, messageId: string):
     return true;
 }
 
-export async function useQueryGetEmbed(channelId: string, messageId: string): Promise<SnakeToCamelCaseNested<SelectEmbed> | string> {
+export async function useQueryGetEmbed(channelId: string, messageId: string): Promise<SelectEmbed | string> {
     const { data, error } = await useSupabaseServiceClient()
         .schema("discord")
         .from("embed")
         .select()
         .eq("channel_id", channelId)
         .eq("message_id", messageId)
-        .returns<SelectEmbed>();
+        .returns<Database.SelectEmbed>();
 
     if (error) {
         await useLogger("error", "embed:get", "Failed to get embed from database");
@@ -193,16 +193,16 @@ export async function useQueryGetEmbed(channelId: string, messageId: string): Pr
     return useSnakeToCamelCase(data);
 }
 
-export async function useQueryGetEmbeds(): Promise<SnakeToCamelCaseNested<Array<SelectEmbed>> | string> {
+export async function useQueryGetEmbeds(): Promise<Array<SelectEmbed> | []> {
     const { data, error } = await useSupabaseServiceClient()
         .schema("discord")
         .from("embed")
         .select()
-        .returns<Array<SelectEmbed>>();
+        .returns<Array<Database.SelectEmbed>>();
 
     if (error) {
         await useLogger("error", "embed:get", "Failed to get embeds from database");
-        return error.message;
+        return [];
     }
 
     await useLogger("info", "embed:get", "Got embeds from database");
