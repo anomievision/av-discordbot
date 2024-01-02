@@ -24,10 +24,12 @@ export default {
             embeds: [embed]
         });
 
-        await useLogger(
-            "info",
-            "command::interaction",
-            `Guild: ${interaction.data.guildId} | Channel: ${interaction.data.targetId} | User: ${interaction.message} | Command: /${interaction.data.name}`
-        );
+        if (interaction.inGuild()) {
+            await useLogger(
+                "info",
+                "command::interaction",
+                `Guild: ${interaction.guildId} | Channel: ${interaction.channelId} | User: ${interaction.member.user.id} | Command: /${interaction.data.name}`
+            );
+        }
     }
 } satisfies SlashCommand;

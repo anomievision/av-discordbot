@@ -11,20 +11,22 @@
     "lint": "eslint \"**/*.ts\"",
     "check": "eslint \"**/*.ts\" --fix",
     "postinstall": "",
+    "deps:check": "bunx taze major",
+    "deps:update": "bunx taze major -w -i",
     "supabase:gen-types": "bunx supabase gen types typescript --db-url 'postgresql://postgres:postgres@127.0.0.1:54322/postgres' --schema public,discord > types/supabase.d.ts"
   },
   "dependencies": {
-    "@lilybird/handlers": "^0.2.1",
+    "@lilybird/handlers": "^0.2.2",
     "@linear/sdk": "^13.0.0",
     "@supabase/supabase-js": "^2.39.1",
-    "lilybird": "^0.4.1",
+    "lilybird": "^0.4.2",
     "postgres": "^3.4.3",
     "tasai": "^0.1.0"
   },
   "devDependencies": {
     "@stylistic/eslint-plugin": "^1.5.1",
-    "@typescript-eslint/eslint-plugin": "^6.16.0",
-    "@typescript-eslint/parser": "^6.16.0",
+    "@typescript-eslint/eslint-plugin": "^6.17.0",
+    "@typescript-eslint/parser": "^6.17.0",
     "bun-types": "latest",
     "eslint": "^8.56.0",
     "eslint-import-resolver-typescript": "^3.6.1",

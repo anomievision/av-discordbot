@@ -4,7 +4,6 @@ import { ApplicationCommandType } from "lilybird";
 import type { EmbedStructure } from "lilybird";
 import type { SlashCommand } from "@lilybird/handlers";
 
-// TODO: Add logger
 export default {
     post: "GLOBAL",
     data: {
@@ -39,10 +38,12 @@ export default {
 
         await interaction.reply({ embeds: [embed], ephemeral: true });
 
-        await useLogger(
-            "info",
-            "command::interaction",
-            `Guild: ${interaction.data.guildId} | Channel: ${interaction.data.targetId} | User: ${interaction.message} | Command: /${interaction.data.name}`
-        );
+        if (interaction.inGuild()) {
+            await useLogger(
+                "info",
+                "command::interaction",
+                `Guild: ${interaction.guildId} | Channel: ${interaction.channelId} | User: ${interaction.member.user.id} | Command: /${interaction.data.name}`
+            );
+        }
     }
 } satisfies SlashCommand;
