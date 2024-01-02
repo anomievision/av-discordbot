@@ -1,5 +1,5 @@
 
-import { getCpuUsage, getMemoryUsage, getUptime, getVersion, useLogger } from "#utils";
+import { useCpuUsage, useMemoryUsage, useUptime, useVersion, useLogger } from "#utils";
 import { ApplicationCommandType } from "lilybird";
 import type { EmbedStructure } from "lilybird";
 import type { SlashCommand } from "@lilybird/handlers";
@@ -19,19 +19,19 @@ export default {
             fields: [
                 {
                     name: "Uptime",
-                    value: await getUptime()
+                    value: await useUptime()
                 },
                 {
                     name: "Version",
-                    value: await getVersion()
+                    value: await useVersion()
                 },
                 {
                     name: "CPU Usage",
-                    value: getCpuUsage()
+                    value: useCpuUsage()
                 },
                 {
                     name: "Memory Usage",
-                    value: getMemoryUsage()
+                    value: useMemoryUsage()
                 }
             ]
         };

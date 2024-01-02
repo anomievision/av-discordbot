@@ -13,15 +13,15 @@ export {
 } from "./useError/index.js";
 
 export {
-    getCpuUsage,
-    getMemoryUsage,
-    getUptime,
-    getVersion
+    useCpuUsage,
+    useMemoryUsage,
+    useUptime,
+    useVersion
 } from "./useInfo/index.js";
 
 export {
-    createLock,
-    removeLock,
+    useCreateLock,
+    useRemoveLock,
     useLock
 } from "./useLock/index.js";
 

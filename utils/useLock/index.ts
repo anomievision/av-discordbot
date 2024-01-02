@@ -3,7 +3,7 @@ import { rm } from "node:fs/promises";
 
 const LOCK_FILE = `${process.cwd()}/run.lock`;
 
-export async function createLock(): Promise<void> {
+export async function useCreateLock(): Promise<void> {
     const lock: Lockfile = {
         started: new Date().toISOString()
     };
@@ -13,7 +13,7 @@ export async function createLock(): Promise<void> {
     await useLogger("info", "lock", `Created lockfile at ${LOCK_FILE}`);
 }
 
-export async function removeLock(): Promise<void> {
+export async function useRemoveLock(): Promise<void> {
     await rm(LOCK_FILE);
 
     await useLogger("info", "lock", `Removed lockfile at ${LOCK_FILE}`);

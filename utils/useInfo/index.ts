@@ -1,9 +1,9 @@
 export {
-    getVersion
+    useVersion
 } from "./bot.js";
 
 export {
-    getCpuUsage,
-    getMemoryUsage,
-    getUptime
+    useCpuUsage,
+    useMemoryUsage,
+    useUptime
 } from "./system.js";

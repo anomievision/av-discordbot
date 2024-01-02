@@ -1,4 +1,3 @@
-import { useEmbedHandler } from "./handlers/useEmbedHandler.js";
 import { createClient, Intents } from "lilybird";
 import { createHandler } from "@lilybird/handlers";
 import type { Client, ClientOptions } from "lilybird";
@@ -44,8 +43,6 @@ export async function startClient(): Promise<Client> {
     };
 
     const client = await createClient(clientOptions);
-
-    await useEmbedHandler(client);
 
     return client;
 }

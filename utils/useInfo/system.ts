@@ -1,7 +1,7 @@
 import { useLock } from "#utils";
 import { cpus } from "node:os";
 
-export function getCpuUsage(): string {
+export function useCpuUsage(): string {
     const [cpu] = cpus();
     const total = Object.values(cpu.times).reduce((acc, tv) => acc + tv, 0);
     const usage = process.cpuUsage();
@@ -11,13 +11,13 @@ export function getCpuUsage(): string {
     return `${percentage.toFixed(2)}%`;
 }
 
-export function getMemoryUsage(): string {
+export function useMemoryUsage(): string {
     const { heapUsed, heapTotal } = process.memoryUsage();
     const percentage = Math.round(heapUsed / heapTotal * 100);
     return `${percentage.toFixed(2)}%`;
 }
 
-export async function getUptime(): Promise<string> {
+export async function useUptime(): Promise<string> {
     const lock = await useLock();
     const uptime = lock.started;
 
