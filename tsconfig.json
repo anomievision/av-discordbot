@@ -9,6 +9,7 @@
         "types": [
             "bun-types",
             "./types/bun.d.ts",
+            "./types/conversions.d.ts",
             "./types/database.d.ts",
             "./types/lilybird.d.ts",
             "./types/lock.d.ts",
