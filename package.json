@@ -16,7 +16,6 @@
     "supabase:gen-types": "bunx supabase gen types typescript --db-url 'postgresql://postgres:postgres@127.0.0.1:54322/postgres' --schema public,discord > types/supabase.d.ts"
   },
   "dependencies": {
-    "@lilybird/handlers": "^0.2.2",
     "@linear/sdk": "^13.0.0",
     "@supabase/supabase-js": "^2.39.1",
     "lilybird": "^0.4.2",

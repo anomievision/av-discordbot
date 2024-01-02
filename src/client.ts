@@ -1,5 +1,5 @@
+import { createHandler } from "./handler.js";
 import { createClient, Intents } from "lilybird";
-import { createHandler } from "@lilybird/handlers";
 import type { Client, ClientOptions } from "lilybird";
 
 export async function startClient(): Promise<Client> {

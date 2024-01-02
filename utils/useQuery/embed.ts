@@ -70,11 +70,11 @@ export async function useQueryCreateEmbed(
         .returns<Database.SelectEmbed>();
 
     if (error) {
-        await useLogger("error", "embed:create", "Failed to create embed in database");
+        await useLogger("error", "query::embed::create", "Failed to create embed in database");
         return error.message;
     }
 
-    await useLogger("info", "embed:create", "Created embed in database");
+    await useLogger("info", "query::embed::create", "Created embed in database");
 
     return useSnakeToCamelCase(data);
 }
@@ -149,11 +149,11 @@ export async function useQueryUpdateEmbed(
         .returns<Database.SelectEmbed>();
 
     if (error) {
-        await useLogger("error", "embed:update", "Failed to update embed in database");
+        await useLogger("error", "query::embed::update", "Failed to update embed in database");
         return error.message;
     }
 
-    await useLogger("info", "embed:update", "Updated embed in database");
+    await useLogger("info", "query::embed::update", "Updated embed in database");
 
     return useSnakeToCamelCase(data);
 }
@@ -167,7 +167,7 @@ export async function useQueryDeleteEmbed(channelId: string, messageId: string):
         .eq("message_id", messageId);
 
     if (error) {
-        await useLogger("error", "embed:delete", "Failed to delete embed from database");
+        await useLogger("error", "query::embed::delete", "Failed to delete embed from database");
         return false;
     }
 
@@ -184,11 +184,11 @@ export async function useQueryGetEmbed(channelId: string, messageId: string): Pr
         .returns<Database.SelectEmbed>();
 
     if (error) {
-        await useLogger("error", "embed:get", "Failed to get embed from database");
+        await useLogger("error", "query::embed::get", "Failed to get embed from database");
         return error.message;
     }
 
-    await useLogger("info", "embed:get", "Got embed from database");
+    await useLogger("info", "query::embed::get", "Got embed from database");
 
     return useSnakeToCamelCase(data);
 }
@@ -201,11 +201,11 @@ export async function useQueryGetEmbeds(): Promise<Array<SelectEmbed> | []> {
         .returns<Array<Database.SelectEmbed>>();
 
     if (error) {
-        await useLogger("error", "embed:get", "Failed to get embeds from database");
+        await useLogger("error", "query::embed::get", "Failed to get embeds from database");
         return [];
     }
 
-    await useLogger("info", "embed:get", "Got embeds from database");
+    await useLogger("info", "query::embed::get", "Got embeds from database");
 
     return useSnakeToCamelCase(data);
 }

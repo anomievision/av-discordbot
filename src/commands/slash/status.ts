@@ -1,8 +1,7 @@
 
-import { useCpuUsage, useMemoryUsage, useUptime, useVersion, useLogger } from "#utils";
+import { useCpuUsage, useMemoryUsage, useUptime, useVersion } from "#utils";
 import { ApplicationCommandType } from "lilybird";
 import type { EmbedStructure } from "lilybird";
-import type { SlashCommand } from "@lilybird/handlers";
 
 export default {
     post: "GLOBAL",
@@ -37,13 +36,5 @@ export default {
         };
 
         await interaction.reply({ embeds: [embed], ephemeral: true });
-
-        if (interaction.inGuild()) {
-            await useLogger(
-                "info",
-                "command::interaction",
-                `Guild: ${interaction.guildId} | Channel: ${interaction.channelId} | User: ${interaction.member.user.id} | Command: /${interaction.data.name}`
-            );
-        }
     }
-} satisfies SlashCommand;
+} satisfies Handlers.SlashCommand;

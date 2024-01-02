@@ -11,7 +11,7 @@
             "./types/bun.d.ts",
             "./types/conversions.d.ts",
             "./types/database.d.ts",
-            "./types/lilybird.d.ts",
+            "./types/handlers.d.ts",
             "./types/lock.d.ts",
             "./types/logger.d.ts",
             "./types/support.d.ts",
