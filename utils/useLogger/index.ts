@@ -8,7 +8,7 @@ function createPayload(
     context?: string
 ): Logger.Payload {
     return {
-        timestamp: new Date().toISOString(),
+        timestamp: new Date(),
         source,
         level,
         message,

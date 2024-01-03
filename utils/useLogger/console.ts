@@ -5,10 +5,12 @@ import {
 function formatMessage(payload: Logger.Payload): string {
     const { timestamp, source, level, message, context } = payload;
 
+    const time = Intl.DateTimeFormat("en-US", { dateStyle: "short", timeStyle: "medium", timeZone: "america/chicago" }).format(timestamp).replaceAll(",", " -");
+
     const formattedLevel = level.toUpperCase();
     const formattedContext = context ? ` [${context}]` : "";
 
-    const styledTimestamp = `<#D95F80>[<r><#8B8B8C>${timestamp}<r><#D95F80>]<r>`;
+    const styledTimestamp = `<#D95F80>[<r><#8B8B8C>${time}<r><#D95F80>]<r>`;
     const styledSource = `<#D95F80>[<r><#9794F2>${source.toLocaleUpperCase()}<r><#D95F80>]<r>`;
     const styledLevel = (): string => {
         switch (level) {
