@@ -19,7 +19,11 @@ export async function pushToDatabase(payload: Logger.Payload): Promise<void> {
             .schema("discord")
             .from("log")
             .insert({
-                payload: JSON.stringify(_payload)
+                timestamp: payload.timestamp,
+                source: payload.source,
+                level: payload.level,
+                message: payload.message,
+                context: payload.context
             })
             .select();
 

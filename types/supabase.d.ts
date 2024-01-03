@@ -119,19 +119,28 @@ export interface Database {
       }
       log: {
         Row: {
-          created_at: string
+          context: Json | null
           id: string
-          payload: Json
+          level: string
+          message: string
+          source: string
+          timestamp: string
         }
         Insert: {
-          created_at?: string
+          context?: Json | null
           id?: string
-          payload: Json
+          level: string
+          message: string
+          source: string
+          timestamp: string
         }
         Update: {
-          created_at?: string
+          context?: Json | null
           id?: string
-          payload?: Json
+          level?: string
+          message?: string
+          source?: string
+          timestamp?: string
         }
         Relationships: []
       }

@@ -1,22 +1,14 @@
 import { pushToConsole } from "./console.js";
 import { pushToDatabase } from "./database.js";
 
-interface Payload {
-    timestamp: Date;
-    source: string;
-    level: "log" | "debug" | "info" | "warn" | "error";
-    message: string;
-    context?: string;
-}
-
 function createPayload(
     level: "log" | "debug" | "info" | "warn" | "error",
     source: string,
     message: string,
     context?: string
-): Payload {
+): Logger.Payload {
     return {
-        timestamp: new Date(),
+        timestamp: new Date().toISOString(),
         source,
         level,
         message,

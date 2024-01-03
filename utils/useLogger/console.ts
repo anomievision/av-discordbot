@@ -5,11 +5,10 @@ import {
 function formatMessage(payload: Logger.Payload): string {
     const { timestamp, source, level, message, context } = payload;
 
-    const formattedTimestamp = timestamp.toISOString();
     const formattedLevel = level.toUpperCase().padEnd(5, " ");
     const formattedContext = context ? ` [${context}]` : "";
 
-    const styledTimestamp = `<yellow>[<r>${formattedTimestamp}<yellow>]<r>`;
+    const styledTimestamp = `<yellow>[<r>${timestamp}<yellow>]<r>`;
     const styledSource = `<yellow>[<r><blue>${source}<r><yellow>]<r>`;
     const styledLevel = (): string => {
         switch (level) {

@@ -1,7 +1,7 @@
 declare global {
     namespace Logger {
         interface Payload {
-            timestamp: Date;
+            timestamp: string;
             source: string;
             level: "log" | "debug" | "info" | "warn" | "error";
             message: string;
