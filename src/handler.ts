@@ -1,4 +1,4 @@
-import { doesDiscordEmbedExist, useLogger, useQueryGetEmbed, useSupabaseServiceClient } from "#utils";
+import { doesDiscordEmbedExist, useLogger, useQuerySelectEmbed, useSupabaseServiceClient } from "#utils";
 import { ChannelType } from "lilybird";
 import type {
     ClientEventListeners,
@@ -254,7 +254,7 @@ export class Handler {
 
             if (!embedFile.enabled) continue;
 
-            const queryEmbed = await useQueryGetEmbed(embedFile.channelId, { name: embedFile.name });
+            const queryEmbed = await useQuerySelectEmbed(embedFile.channelId, { name: embedFile.name });
 
             let message;
 

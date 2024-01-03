@@ -7,15 +7,17 @@ describe(
         test(
             "logger",
             async () => {
-                await useLogger("log", "discord", "Creating client...");
-                await new Promise((resolve) => { setTimeout(resolve, 1000); });
-                await useLogger("debug", "discord", "Debugging client...");
-                await new Promise((resolve) => { setTimeout(resolve, 1000); });
-                await useLogger("info", "discord", "Bot is online!");
-                await new Promise((resolve) => { setTimeout(resolve, 1000); });
+                await useLogger("log", "startup", "Creating client...");
+                await new Promise((resolve) => { setTimeout(resolve, 500); });
+                await useLogger("debug", "lock:create", "Debugging client...");
+                await new Promise((resolve) => { setTimeout(resolve, 500); });
+                await useLogger("info", "listeners", "Logged in as Anom");
+                await new Promise((resolve) => { setTimeout(resolve, 500); });
                 await useLogger("warn", "discord", "This is a warning!");
-                await new Promise((resolve) => { setTimeout(resolve, 1000); });
-                await useLogger("error", "discord", "This is an error!");
+                await new Promise((resolve) => { setTimeout(resolve, 500); });
+                await useLogger("error", "query::embed::select", "This is an error!");
+                await new Promise((resolve) => { setTimeout(resolve, 500); });
+                await useLogger("error", "query::embed::select", "This is an error!", JSON.stringify({ name: "Anomie" }));
             }
         );
     }

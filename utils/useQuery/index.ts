@@ -2,6 +2,18 @@ export {
     useQueryCreateEmbed,
     useQueryUpdateEmbed,
     useQueryDeleteEmbed,
-    useQueryGetEmbed,
-    useQueryGetEmbeds
+    useQuerySelectEmbed,
+    useQuerySelectEmbeds
 } from "./embed.js";
+
+export {
+    useQuerySelectProfile
+} from "./profile.js";
+
+export {
+    useQueryCreateUser,
+    useQueryUpdateUser,
+    useQueryDeleteUser,
+    useQuerySelectUser,
+    useQuerySelectUsers
+} from "./user.js";

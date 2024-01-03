@@ -5,29 +5,30 @@ import {
 function formatMessage(payload: Logger.Payload): string {
     const { timestamp, source, level, message, context } = payload;
 
-    const formattedLevel = level.toUpperCase().padEnd(5, " ");
+    const formattedLevel = level.toUpperCase();
     const formattedContext = context ? ` [${context}]` : "";
 
-    const styledTimestamp = `<yellow>[<r>${timestamp}<yellow>]<r>`;
-    const styledSource = `<yellow>[<r><blue>${source}<r><yellow>]<r>`;
+    const styledTimestamp = `<#D95F80>[<r><#8B8B8C>${timestamp}<r><#D95F80>]<r>`;
+    const styledSource = `<#D95F80>[<r><#9794F2>${source.toLocaleUpperCase()}<r><#D95F80>]<r>`;
     const styledLevel = (): string => {
         switch (level) {
             case "log":
-                return `<green>${formattedLevel}<r>`;
+                return `<#59E37B>${formattedLevel}<r>`;
             case "debug":
-                return `<cyan>${formattedLevel}<r>`;
+                return `<#F252AA>${formattedLevel}<r>`;
             case "info":
-                return `<blue>${formattedLevel}<r>`;
+                return `<#6EC9FA>${formattedLevel}<r>`;
             case "warn":
-                return `<yellow>${formattedLevel}<r>`;
+                return `<#FFFC66>${formattedLevel}<r>`;
             case "error":
-                return `<red>${formattedLevel}<r>`;
+                return `<#FA5A6A>${formattedLevel}<r>`;
         }
     };
+    const styledSeparator = "<#D95F80>>><r>";
     const styledMessage = `${message}`;
-    const StyledContext = context ? `<yellow>[<r><magenta>${formattedContext}<r><yellow>]<r>` : "";
+    const StyledContext = context ? `<#9794F2>${formattedContext}<r>` : "";
 
-    return `${styledTimestamp} ${styledSource} ${styledLevel()} > ${styledMessage}${StyledContext}`;
+    return `${styledTimestamp} ${styledSource} ${styledLevel()} ${styledSeparator} ${styledMessage}${StyledContext}`;
 }
 
 export function pushToConsole(payload: Logger.Payload): void {

@@ -41,8 +41,14 @@ export {
     useQueryCreateEmbed,
     useQueryUpdateEmbed,
     useQueryDeleteEmbed,
-    useQueryGetEmbed,
-    useQueryGetEmbeds
+    useQuerySelectEmbed,
+    useQuerySelectEmbeds,
+    useQuerySelectProfile,
+    useQueryCreateUser,
+    useQueryUpdateUser,
+    useQueryDeleteUser,
+    useQuerySelectUser,
+    useQuerySelectUsers
 } from "./useQuery/index.js";
 
 export {
