@@ -17,13 +17,13 @@
   },
   "dependencies": {
     "@linear/sdk": "^13.0.0",
-    "@supabase/supabase-js": "^2.39.1",
-    "lilybird": "^0.4.2",
+    "@supabase/supabase-js": "^2.39.2",
+    "lilybird": "^0.4.3",
     "postgres": "^3.4.3",
     "tasai": "^0.1.0"
   },
   "devDependencies": {
-    "@stylistic/eslint-plugin": "^1.5.1",
+    "@stylistic/eslint-plugin": "^1.5.3",
     "@typescript-eslint/eslint-plugin": "^6.17.0",
     "@typescript-eslint/parser": "^6.17.0",
     "bun-types": "latest",
