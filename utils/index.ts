@@ -1,7 +1,14 @@
 export {
+    extractEmbedStructure,
     useSupabaseClient,
     useSupabaseServiceClient
 } from "./useDatabase/index.js";
+
+export {
+    useDiscordCreateEmbed,
+    useDiscordUpdateEmbed,
+    useDiscordDeleteEmbed
+} from "./useDiscord/index.js";
 
 export {
     useExitTasks,

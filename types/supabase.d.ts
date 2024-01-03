@@ -15,7 +15,7 @@ export interface Database {
           author_name: string | null
           author_proxy_icon_url: string | null
           author_url: string | null
-          channel_id: string | null
+          channel_id: string
           color: number | null
           created_at: string
           description: string | null
@@ -49,7 +49,7 @@ export interface Database {
           author_name?: string | null
           author_proxy_icon_url?: string | null
           author_url?: string | null
-          channel_id?: string | null
+          channel_id: string
           color?: number | null
           created_at?: string
           description?: string | null
@@ -83,7 +83,7 @@ export interface Database {
           author_name?: string | null
           author_proxy_icon_url?: string | null
           author_url?: string | null
-          channel_id?: string | null
+          channel_id?: string
           color?: number | null
           created_at?: string
           description?: string | null
@@ -158,7 +158,7 @@ export interface Database {
       [_ in never]: never
     }
     Enums: {
-      embed_type: "rich" | "image" | "video" | "gifv" | "article" | "link"
+      [_ in never]: never
     }
     CompositeTypes: {
       [_ in never]: never
