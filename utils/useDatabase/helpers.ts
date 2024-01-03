@@ -1,6 +1,6 @@
 import type { EmbedStructure } from "lilybird";
 
-export function extractEmbedStructure(embedFromDb: SelectEmbed): { channelId: string, messageId: string | null, embed: EmbedStructure } {
+export function extractEmbedStructure(embedFromDb: SelectEmbed): { channelId: string, messageId: string | null, name: string, embed: EmbedStructure } {
     const embed: EmbedStructure = {
         title: embedFromDb.title ?? undefined,
         description: embedFromDb.description ?? undefined,
@@ -49,6 +49,7 @@ export function extractEmbedStructure(embedFromDb: SelectEmbed): { channelId: st
     return {
         channelId: embedFromDb.channelId,
         messageId: embedFromDb.messageId,
+        name: embedFromDb.name,
         embed
     };
 }

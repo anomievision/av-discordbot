@@ -29,6 +29,7 @@ export interface Database {
           image_url: string | null
           image_width: number | null
           message_id: string | null
+          name: string
           provider_name: string | null
           provider_url: string | null
           thumbnail_height: number | null
@@ -63,6 +64,7 @@ export interface Database {
           image_url?: string | null
           image_width?: number | null
           message_id?: string | null
+          name?: string
           provider_name?: string | null
           provider_url?: string | null
           thumbnail_height?: number | null
@@ -97,6 +99,7 @@ export interface Database {
           image_url?: string | null
           image_width?: number | null
           message_id?: string | null
+          name?: string
           provider_name?: string | null
           provider_url?: string | null
           thumbnail_height?: number | null

@@ -1,4 +1,4 @@
-import { useLogger } from "#utils";
+import { doesDiscordEmbedExist, useLogger, useQueryGetEmbed, useSupabaseServiceClient } from "#utils";
 import { ChannelType } from "lilybird";
 import type {
     ClientEventListeners,
@@ -9,10 +9,11 @@ import type {
 } from "lilybird";
 
 export class Handler {
+    protected readonly events = new Map<Handlers.Event["event"], Handlers.Event>();
     protected readonly guildSlashCommands = new Map<string, Handlers.GuildSlashCommand>();
     protected readonly globalSlashCommands = new Map<string, Handlers.GlobalSlashCommand>();
     protected readonly messageCommands = new Map<Array<string>, Handlers.MessageCommand>();
-    protected readonly events = new Map<Handlers.Event["event"], Handlers.Event>();
+    protected readonly autoEmbeds = new Map<string, Handlers.AutoEmbed>();
 
     protected readonly dirs: Handlers.Directories;
     protected readonly prefix: string;
@@ -22,22 +23,31 @@ export class Handler {
         this.prefix = prefix ?? "!";
     }
 
-    public async registerGlobalCommands(client: Client): Promise<void> {
-        for await (const command of this.globalSlashCommands.values()) {
-            await client.rest.createGlobalApplicationCommand(client.user.id, command.data);
-            await useLogger("info", "handler", `Registered global slash command: ${command.data.name}`);
-        }
-    }
+    // Listeners
+    public async readEventDir(dir: string | undefined = this.dirs.listeners): Promise<boolean> {
+        if (typeof dir === "undefined") return false;
 
-    public async registerGuildCommands(client: Client): Promise<void> {
-        for await (const command of this.guildSlashCommands.values()) {
-            if (Array.isArray(command.post)) {
-                const temp: Array<Promise<unknown>> = [];
-                for (let i = 0; i < command.post.length; i++) temp.push(client.rest.createGuildApplicationCommand(client.user.id, command.post[i], command.data));
-                await Promise.all(temp);
-            } else await client.rest.createGuildApplicationCommand(client.user.id, command.post, command.data);
-            await useLogger("info", "handler", `Registered guild slash command: ${command.data.name}`);
+        const router = new Bun.FileSystemRouter({
+            fileExtensions: [".ts", ".tsx", ".js", ".jsx"],
+            style: "nextjs",
+            dir
+        });
+
+        for (let i = 0, values = Object.values(router.routes), { length } = values; i < length; i++) {
+            const val = values[i];
+
+            // Lazy solution, could probably be better
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, no-await-in-loop
+            const file: Handlers.Event = (await import(val)).default;
+            if (typeof file === "undefined") continue;
+
+            this.events.set(file.event, file);
+
+            // eslint-disable-next-line no-await-in-loop
+            await useLogger("info", "handler", `Loaded event: ${file.event}`);
         }
+
+        return true;
     }
 
     public async readSlashCommandDir(dir: string | undefined = this.dirs.slashCommands): Promise<boolean> {
@@ -67,32 +77,6 @@ export class Handler {
         return true;
     }
 
-    public async readEventDir(dir: string | undefined = this.dirs.listeners): Promise<boolean> {
-        if (typeof dir === "undefined") return false;
-
-        const router = new Bun.FileSystemRouter({
-            fileExtensions: [".ts", ".tsx", ".js", ".jsx"],
-            style: "nextjs",
-            dir
-        });
-
-        for (let i = 0, values = Object.values(router.routes), { length } = values; i < length; i++) {
-            const val = values[i];
-
-            // Lazy solution, could probably be better
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, no-await-in-loop
-            const file: Handlers.Event = (await import(val)).default;
-            if (typeof file === "undefined") continue;
-
-            this.events.set(file.event, file);
-
-            // eslint-disable-next-line no-await-in-loop
-            await useLogger("info", "handler", `Loaded event: ${file.event}`);
-        }
-
-        return true;
-    }
-
     public async readMessageCommandDir(dir: string | undefined = this.dirs.messageCommands): Promise<boolean> {
         if (typeof dir === "undefined") return false;
 
@@ -114,6 +98,32 @@ export class Handler {
 
             // eslint-disable-next-line no-await-in-loop
             await useLogger("info", "handler", `Loaded message command: ${file.name}`);
+        }
+
+        return true;
+    }
+
+    public async readAutoEmbedDir(dir: string | undefined = this.dirs.autoEmbeds): Promise<boolean> {
+        if (typeof dir === "undefined") return false;
+
+        const router = new Bun.FileSystemRouter({
+            fileExtensions: [".ts", ".tsx", ".js", ".jsx"],
+            style: "nextjs",
+            dir
+        });
+
+        for (let i = 0, values = Object.values(router.routes), { length } = values; i < length; i++) {
+            const val = values[i];
+
+            // Lazy solution, could probably be better
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, no-await-in-loop
+            const file: Handlers.AutoEmbed = (await import(val)).default;
+            if (typeof file === "undefined") continue;
+
+            this.autoEmbeds.set(file.name, file);
+
+            // eslint-disable-next-line no-await-in-loop
+            await useLogger("info", "handler", `Loaded auto-embed: ${file.name}`);
         }
 
         return true;
@@ -156,9 +166,10 @@ export class Handler {
     }
 
     public async buildListeners(): Promise<ClientEventListeners> {
+        const eventsExist = await this.readEventDir();
         const slashCommandsExist = await this.readSlashCommandDir();
         const messageCommandsExist = await this.readMessageCommandDir();
-        const eventsExist = await this.readEventDir();
+
         // eslint-disable-next-line func-style
         let interactionCreateFn: Exclude<ClientEventListeners["interactionCreate"], undefined> | undefined = undefined;
 
@@ -213,6 +224,113 @@ export class Handler {
 
         return listeners;
     }
+
+    // Setup
+    public async registerGlobalCommands(client: Client): Promise<void> {
+        for await (const command of this.globalSlashCommands.values()) {
+            await client.rest.createGlobalApplicationCommand(client.user.id, command.data);
+            await useLogger("info", "handler", `Registered global slash command: ${command.data.name}`);
+        }
+    }
+
+    public async registerGuildCommands(client: Client): Promise<void> {
+        for await (const command of this.guildSlashCommands.values()) {
+            if (Array.isArray(command.post)) {
+                const temp: Array<Promise<unknown>> = [];
+                for (let i = 0; i < command.post.length; i++) temp.push(client.rest.createGuildApplicationCommand(client.user.id, command.post[i], command.data));
+                await Promise.all(temp);
+            } else await client.rest.createGuildApplicationCommand(client.user.id, command.post, command.data);
+            await useLogger("info", "handler", `Registered guild slash command: ${command.data.name}`);
+        }
+    }
+
+    public async registerAutoEmbeds(client: Client): Promise<void> {
+        const autoEmbedsExist = await this.readAutoEmbedDir();
+
+        if (!autoEmbedsExist) return;
+
+        for await (const embedFile of this.autoEmbeds.values()) {
+            await useLogger("info", "listeners", `Processing auto-embed: ${embedFile.name}`);
+
+            if (!embedFile.enabled) continue;
+
+            const queryEmbed = await useQueryGetEmbed(embedFile.channelId, { name: embedFile.name });
+
+            let message;
+
+            if (typeof queryEmbed === "string") {
+                try {
+                    message = await client.rest.createMessage(embedFile.channelId, { embeds: embedFile.embeds });
+                } catch (error: unknown) {
+                    await useLogger("error", "handler", `Failed to create auto-embed: ${embedFile.name}`);
+                    continue;
+                }
+
+                await useLogger("info", "handler", `Created auto-embed: ${embedFile.name}`);
+
+                const { error } = await useSupabaseServiceClient()
+                    .schema("discord")
+                    .from("embed")
+                    .insert({
+                        channel_id: embedFile.channelId,
+                        name: embedFile.name,
+                        message_id: message.id
+                    });
+
+                if (error) {
+                    await useLogger("error", "handler", `Failed to create auto-embed: ${embedFile.name}`);
+                    continue;
+                }
+
+                continue;
+            }
+
+            if (queryEmbed.messageId) {
+                const exists = await doesDiscordEmbedExist(client.rest, embedFile.channelId, queryEmbed.messageId);
+
+                if (!exists) {
+                    try {
+                        message = await client.rest.createMessage(embedFile.channelId, { embeds: embedFile.embeds });
+                    } catch (error: unknown) {
+                        await useLogger("error", "handler", `Failed to create auto-embed: ${embedFile.name}`);
+                        continue;
+                    }
+
+                    await useLogger("info", "handler", `Created auto-embed: ${embedFile.name}`);
+
+                    await useSupabaseServiceClient()
+                        .schema("discord")
+                        .from("embed")
+                        .update({
+                            message_id: message.id
+                        })
+                        .eq("channel_id", embedFile.channelId)
+                        .eq("name", embedFile.name);
+                } else {
+                    await client.rest.editMessage(embedFile.channelId, queryEmbed.messageId, { embeds: embedFile.embeds });
+                    await useLogger("info", "handler", `Updated auto-embed: ${embedFile.name}`);
+                }
+            } else {
+                try {
+                    message = await client.rest.createMessage(embedFile.channelId, { embeds: embedFile.embeds });
+                } catch (error: unknown) {
+                    await useLogger("error", "handler", `Failed to create auto-embed: ${embedFile.name}`);
+                    continue;
+                }
+
+                await useLogger("info", "handler", `Created auto-embed: ${embedFile.name}`);
+
+                await useSupabaseServiceClient()
+                    .schema("discord")
+                    .from("embed")
+                    .insert({
+                        channel_id: embedFile.channelId,
+                        name: embedFile.name,
+                        message_id: message.id
+                    });
+            }
+        }
+    }
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -232,6 +350,7 @@ export async function createHandler({
         setup: async (client) => {
             await handler.registerGlobalCommands(client);
             await handler.registerGuildCommands(client);
+            await handler.registerAutoEmbeds(client);
         }
     };
 }

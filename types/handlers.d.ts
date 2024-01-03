@@ -6,11 +6,19 @@ import type {
     ApplicationCommandData, 
     AutocompleteData, 
     GuildInteraction, 
-    Interaction 
+    Interaction, 
+    EmbedStructure
 } from "lilybird";
 
 declare global {
     namespace Handlers {
+        interface AutoEmbed {
+            name: string;
+            channelId: string;
+            enabled: boolean
+            embeds: Array<EmbedStructure>;
+        }
+
         interface Event<E extends keyof ClientEventListeners = keyof ClientEventListeners, T extends Required<ClientEventListeners> = Required<ClientEventListeners>> {
             name?: string;
             event: E;
@@ -44,6 +52,7 @@ declare global {
         type Guild = `${number}` | Array<`${number}`>;
 
         type Directories = {
+            autoEmbeds?: string;
             slashCommands?: string;
             messageCommands?: string;
             listeners?: string;

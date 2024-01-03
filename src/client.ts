@@ -6,9 +6,10 @@ export async function startClient(): Promise<Client> {
     const listeners = await createHandler({
         prefix: process.env.PREFIX,
         dirs: {
+            listeners: `${import.meta.dir}/listeners`,
             slashCommands: `${import.meta.dir}/commands/slash`,
             messageCommands: `${import.meta.dir}/commands/message`,
-            listeners: `${import.meta.dir}/listeners`
+            autoEmbeds: `${import.meta.dir}/embeds`
         }
     });
 

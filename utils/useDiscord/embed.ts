@@ -155,3 +155,13 @@ export async function useDiscordDeleteEmbed(rest: REST, channelId: string, messa
         };
     }
 }
+
+export async function doesDiscordEmbedExist(rest: REST, channelId: string, messageId: string): Promise<boolean> {
+    try {
+        await rest.getChannelMessage(channelId, messageId);
+
+        return true;
+    } catch {
+        return false;
+    }
+}

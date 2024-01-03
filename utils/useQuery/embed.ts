@@ -18,6 +18,7 @@ export async function useQueryCreateEmbed(
         imageProxyUrl,
         imageUrl,
         imageWidth,
+        name,
         providerName,
         providerUrl,
         thumbnailHeight,
@@ -53,6 +54,7 @@ export async function useQueryCreateEmbed(
                 image_proxy_url: imageProxyUrl,
                 image_url: imageUrl,
                 image_width: imageWidth,
+                name,
                 provider_name: providerName,
                 provider_url: providerUrl,
                 thumbnail_height: thumbnailHeight,
@@ -98,6 +100,7 @@ export async function useQueryUpdateEmbed(
         imageProxyUrl,
         imageUrl,
         imageWidth,
+        name,
         providerName,
         providerUrl,
         thumbnailHeight,
@@ -131,6 +134,7 @@ export async function useQueryUpdateEmbed(
             image_proxy_url: imageProxyUrl,
             image_url: imageUrl,
             image_width: imageWidth,
+            name,
             provider_name: providerName,
             provider_url: providerUrl,
             thumbnail_height: thumbnailHeight,
@@ -158,13 +162,32 @@ export async function useQueryUpdateEmbed(
     return useSnakeToCamelCase(data);
 }
 
-export async function useQueryDeleteEmbed(channelId: string, messageId: string): Promise<boolean> {
-    const { error } = await useSupabaseServiceClient()
-        .schema("discord")
-        .from("embed")
-        .delete()
-        .eq("channel_id", channelId)
-        .eq("message_id", messageId);
+export async function useQueryDeleteEmbed(channelId: string, {
+    messageId,
+    name
+}: {
+    messageId?: string,
+    name?: string
+}): Promise<boolean> {
+    const { error } = channelId && messageId
+        ? await useSupabaseServiceClient()
+            .schema("discord")
+            .from("embed")
+            .delete()
+            .eq("channel_id", channelId)
+            .eq("message_id", messageId)
+        : channelId && name
+            ? await useSupabaseServiceClient()
+                .schema("discord")
+                .from("embed")
+                .delete()
+                .eq("channel_id", channelId)
+                .eq("name", name)
+            : await useSupabaseServiceClient()
+                .schema("discord")
+                .from("embed")
+                .delete()
+                .eq("channel_id", channelId);
 
     if (error) {
         await useLogger("error", "query::embed::delete", "Failed to delete embed from database");
@@ -174,14 +197,41 @@ export async function useQueryDeleteEmbed(channelId: string, messageId: string):
     return true;
 }
 
-export async function useQueryGetEmbed(channelId: string, messageId: string): Promise<SelectEmbed | string> {
-    const { data, error } = await useSupabaseServiceClient()
-        .schema("discord")
-        .from("embed")
-        .select()
-        .eq("channel_id", channelId)
-        .eq("message_id", messageId)
-        .returns<Database.SelectEmbed>();
+export async function useQueryGetEmbed(channelId: string, {
+    messageId,
+    name
+}: {
+    messageId?: string,
+    name?: string
+}): Promise<SelectEmbed | string> {
+    const { data, error } = channelId && messageId
+        ? await useSupabaseServiceClient()
+            .schema("discord")
+            .from("embed")
+            .select()
+            .eq("channel_id", channelId)
+            .eq("message_id", messageId)
+            .returns<Database.SelectEmbed>()
+            .limit(1)
+            .single()
+        : channelId && name
+            ? await useSupabaseServiceClient()
+                .schema("discord")
+                .from("embed")
+                .select()
+                .eq("channel_id", channelId)
+                .eq("name", name)
+                .returns<Database.SelectEmbed>()
+                .limit(1)
+                .single()
+            : await useSupabaseServiceClient()
+                .schema("discord")
+                .from("embed")
+                .select()
+                .eq("channel_id", channelId)
+                .returns<Database.SelectEmbed>()
+                .limit(1)
+                .single();
 
     if (error) {
         await useLogger("error", "query::embed::get", "Failed to get embed from database");

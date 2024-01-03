@@ -5,6 +5,7 @@ export {
 } from "./useDatabase/index.js";
 
 export {
+    doesDiscordEmbedExist,
     useDiscordCreateEmbed,
     useDiscordUpdateEmbed,
     useDiscordDeleteEmbed

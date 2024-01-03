@@ -1,4 +1,5 @@
 export {
+    doesDiscordEmbedExist,
     useDiscordCreateEmbed,
     useDiscordUpdateEmbed,
     useDiscordDeleteEmbed
