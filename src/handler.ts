@@ -5,7 +5,8 @@ import type {
     BaseClientOptions,
     Interaction,
     Message,
-    Client
+    Client,
+    MessageStructure
 } from "lilybird";
 
 export class Handler {
@@ -254,82 +255,50 @@ export class Handler {
 
             if (!embedFile.enabled) continue;
 
-            const queryEmbed = await useQuerySelectEmbed(embedFile.channelId, { name: embedFile.name });
-
             let message;
 
-            if (typeof queryEmbed === "string") {
-                try {
-                    message = await client.rest.createMessage(embedFile.channelId, { embeds: embedFile.embeds });
-                } catch (error: unknown) {
-                    await useLogger("error", "handler", `Failed to create auto-embed: ${embedFile.name}`);
-                    continue;
-                }
-
-                await useLogger("info", "handler", `Created auto-embed: ${embedFile.name}`);
-
-                const { error } = await useSupabaseServiceClient()
-                    .schema("discord")
-                    .from("embed")
-                    .insert({
-                        channel_id: embedFile.channelId,
-                        name: embedFile.name,
-                        message_id: message.id
-                    });
-
-                if (error) {
-                    await useLogger("error", "handler", `Failed to create auto-embed: ${embedFile.name}`);
-                    continue;
-                }
-
+            try {
+                message = await this.createOrUpdateMessage(client, embedFile);
+            } catch (error: unknown) {
+                await useLogger("error", "handler", `Failed to create or update auto-embed: ${embedFile.name}: ${JSON.stringify(error)}`);
                 continue;
             }
 
-            if (queryEmbed.messageId) {
-                const exists = await doesDiscordEmbedExist(client.rest, embedFile.channelId, queryEmbed.messageId);
-
-                if (!exists) {
-                    try {
-                        message = await client.rest.createMessage(embedFile.channelId, { embeds: embedFile.embeds });
-                    } catch (error: unknown) {
-                        await useLogger("error", "handler", `Failed to create auto-embed: ${embedFile.name}`);
-                        continue;
-                    }
-
-                    await useLogger("info", "handler", `Created auto-embed: ${embedFile.name}`);
-
-                    await useSupabaseServiceClient()
-                        .schema("discord")
-                        .from("embed")
-                        .update({
-                            message_id: message.id
-                        })
-                        .eq("channel_id", embedFile.channelId)
-                        .eq("name", embedFile.name);
-                } else {
-                    await client.rest.editMessage(embedFile.channelId, queryEmbed.messageId, { embeds: embedFile.embeds });
-                    await useLogger("info", "handler", `Updated auto-embed: ${embedFile.name}`);
-                }
-            } else {
-                try {
-                    message = await client.rest.createMessage(embedFile.channelId, { embeds: embedFile.embeds });
-                } catch (error: unknown) {
-                    await useLogger("error", "handler", `Failed to create auto-embed: ${embedFile.name}`);
-                    continue;
-                }
-
-                await useLogger("info", "handler", `Created auto-embed: ${embedFile.name}`);
-
-                await useSupabaseServiceClient()
-                    .schema("discord")
-                    .from("embed")
-                    .insert({
-                        channel_id: embedFile.channelId,
-                        name: embedFile.name,
-                        message_id: message.id
-                    });
-            }
+            if (message)
+                await this.updateSupabase(embedFile, message.id);
         }
+    }
+
+    private async createOrUpdateMessage(client: Client, embedFile: Handlers.AutoEmbed): Promise<MessageStructure | undefined> {
+        let message;
+
+        const queryEmbed = await useQuerySelectEmbed(embedFile.channelId, { name: embedFile.name });
+
+        if (typeof queryEmbed === "string" || !queryEmbed.messageId || !await doesDiscordEmbedExist(client.rest, embedFile.channelId, queryEmbed.messageId)) {
+            message = await client.rest.createMessage(embedFile.channelId, { embeds: embedFile.embeds });
+            await useLogger("info", "handler", `Created auto-embed: ${embedFile.name}`);
+        } else {
+            await client.rest.editMessage(embedFile.channelId, queryEmbed.messageId, { embeds: embedFile.embeds });
+            await useLogger("info", "handler", `Updated auto-embed: ${embedFile.name}`);
+        }
+
+        return message;
+    }
+
+    private async updateSupabase(embedFile: Handlers.AutoEmbed, messageId: string): Promise<void> {
+        const { error } = await useSupabaseServiceClient()
+            .schema("discord")
+            .from("embed")
+            .upsert([
+                {
+                    channel_id: embedFile.channelId,
+                    name: embedFile.name,
+                    message_id: messageId
+                }
+            ]);
+
+        if (error)
+            await useLogger("error", "handler", `Failed to create or update auto-embed in Supabase: ${embedFile.name}`);
     }
 }
 
