@@ -7,6 +7,14 @@ export {
 } from "./embed.js";
 
 export {
+    useQueryCreateLog,
+    useQueryUpdateLog,
+    useQueryDeleteLog,
+    useQuerySelectLog,
+    useQuerySelectLogs
+} from "./log.js";
+
+export {
     useQuerySelectProfile
 } from "./profile.js";
 
