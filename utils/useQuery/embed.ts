@@ -244,7 +244,7 @@ export async function useQuerySelectEmbed(channelId: string, {
         return error.message;
     }
 
-    await useLogger("info", "query::embed::select", "Got embed from database");
+    await useLogger("info", "query::embed::select", "Selected embed from database");
 
     return useSnakeToCamelCase(data);
 }
@@ -261,7 +261,7 @@ export async function useQuerySelectEmbeds(): Promise<Array<SelectEmbed> | []> {
         return [];
     }
 
-    await useLogger("info", "query::embed::select", "Got embeds from database");
+    await useLogger("info", "query::embed::select", "Selected embeds from database");
 
     return useSnakeToCamelCase(data);
 }

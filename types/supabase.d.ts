@@ -119,27 +119,27 @@ export interface Database {
       }
       log: {
         Row: {
+          category: string
           context: Json | null
           id: string
           level: string
           message: string
-          source: string
           timestamp: string
         }
         Insert: {
+          category: string
           context?: Json | null
           id?: string
           level: string
           message: string
-          source: string
           timestamp: string
         }
         Update: {
+          category?: string
           context?: Json | null
           id?: string
           level?: string
           message?: string
-          source?: string
           timestamp?: string
         }
         Relationships: []

@@ -2,39 +2,43 @@ import {
     parseUsing24BitColors
 } from "tasai";
 
-function formatMessage(payload: Logger.Payload): string {
-    const { timestamp, source, level, message, context } = payload;
+const timeFormatter = Intl.DateTimeFormat("en-US", { dateStyle: "short", timeStyle: "medium", timeZone: "america/chicago" });
 
-    const time = Intl.DateTimeFormat("en-US", { dateStyle: "short", timeStyle: "medium", timeZone: "america/chicago" }).format(timestamp).replaceAll(",", " -");
+export function print(payload: Logger.Payload): void {
+    const { timestamp, category, level, message, context } = payload;
+    const time = timeFormatter.format(timestamp).replaceAll(",", " -");
 
-    const formattedLevel = level.toUpperCase();
     const formattedContext = context ? ` [${context}]` : "";
 
     const styledTimestamp = `<#D95F80>[<r><#8B8B8C>${time}<r><#D95F80>]<r>`;
-    const styledSource = `<#D95F80>[<r><#9794F2>${source.toLocaleUpperCase()}<r><#D95F80>]<r>`;
-    const styledLevel = (): string => {
-        switch (level) {
-            case "log":
-                return `<#59E37B>${formattedLevel}<r>`;
-            case "debug":
-                return `<#F252AA>${formattedLevel}<r>`;
-            case "info":
-                return `<#6EC9FA>${formattedLevel}<r>`;
-            case "warn":
-                return `<#FFFC66>${formattedLevel}<r>`;
-            case "error":
-                return `<#FA5A6A>${formattedLevel}<r>`;
-        }
-    };
+    const styledCategory = `<#D95F80>[<r><#9794F2>${category.toLocaleUpperCase()}<r><#D95F80>]<r>`;
     const styledSeparator = "<#D95F80>>><r>";
     const styledMessage = `${message}`;
-    const StyledContext = context ? `<#9794F2>${formattedContext}<r>` : "";
+    const styledContext = context ? `<#9794F2>${formattedContext}<r>` : "";
 
-    return `${styledTimestamp} ${styledSource} ${styledLevel()} ${styledSeparator} ${styledMessage}${StyledContext}`;
-}
+    const staticLog = parseUsing24BitColors(`${styledTimestamp} ${styledCategory} %s ${styledSeparator} ${styledMessage}${styledContext}`);
 
-export function pushToConsole(payload: Logger.Payload): void {
-    const message = formatMessage(payload);
-
-    console[payload.level](parseUsing24BitColors(message));
+    const formattedLevel = level.toUpperCase(); // why not just make them caps by default an use an enum then??
+    switch (level) {
+        case "debug": {
+            console.debug(staticLog, parseUsing24BitColors(`<#F252AA>${formattedLevel}<r>`));
+            break;
+        }
+        case "info": {
+            console.info(staticLog, parseUsing24BitColors(`<#6EC9FA>${formattedLevel}<r>`));
+            break;
+        }
+        case "warn": {
+            console.warn(staticLog, parseUsing24BitColors(`<#FFFC66>${formattedLevel}<r>`));
+            break;
+        }
+        case "error": {
+            console.error(staticLog, parseUsing24BitColors(`<#FA5A6A>${formattedLevel}<r>`));
+            break;
+        }
+        default: {
+            console.log(staticLog, parseUsing24BitColors(`<#59E37B>${formattedLevel}<r>`));
+            break;
+        }
+    }
 }
