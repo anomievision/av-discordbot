@@ -18,7 +18,7 @@
   "dependencies": {
     "@linear/sdk": "^13.0.0",
     "@supabase/supabase-js": "^2.39.2",
-    "lilybird": "^0.4.3",
+    "lilybird": "^0.4.4",
     "postgres": "^3.4.3",
     "tasai": "^0.1.0"
   },

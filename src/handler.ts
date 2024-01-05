@@ -265,7 +265,7 @@ export class Handler {
             }
 
             if (message)
-                await this.updateSupabase(embedFile, message.id);
+                await this.updateDatabase(embedFile, message.id);
         }
     }
 
@@ -285,7 +285,7 @@ export class Handler {
         return message;
     }
 
-    private async updateSupabase(embedFile: Handlers.AutoEmbed, messageId: string): Promise<void> {
+    private async updateDatabase(embedFile: Handlers.AutoEmbed, messageId: string): Promise<void> {
         const { error } = await useSupabaseServiceClient()
             .schema("discord")
             .from("embed")
@@ -298,7 +298,7 @@ export class Handler {
             ]);
 
         if (error)
-            await useLogger("error", "handler", `Failed to create or update auto-embed in Supabase: ${embedFile.name}`);
+            await useLogger("error", "handler", `Failed to create or update auto-embed in Database: ${embedFile.name}`);
     }
 }
 
