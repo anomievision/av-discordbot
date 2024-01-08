@@ -1,39 +1,26 @@
-import { createClient } from "@supabase/supabase-js";
-import type { SupabaseClient } from "@supabase/supabase-js";
+import { AnomieDatabase } from "av-database";
 
-let supabaseClient: SupabaseClient<Database>;
-let isSupabaseClientInitialized = false;
-let supabaseServiceClient: SupabaseClient<Database>;
-let isSupabaseServiceClientInitialized = false;
+let databaseClient: AnomieDatabase;
+let isDatabaseClientInitialized = false;
+let databaseServiceClient: AnomieDatabase;
+let isDatabaseServiceClientInitialized = false;
 
-export function useSupabaseClient(): SupabaseClient<Database> {
-    if (!isSupabaseClientInitialized) {
-        supabaseClient = createClient<Database>(process.env.SUPABASE_URL, process.env.SUPABASE_KEY, {
-            auth: {
-                autoRefreshToken: true,
-                persistSession: true,
-                detectSessionInUrl: false
-            }
-        });
+export function useDatabaseClient(): AnomieDatabase {
+    if (!isDatabaseClientInitialized) {
+        databaseClient = new AnomieDatabase(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 
-        isSupabaseClientInitialized = true;
+        isDatabaseClientInitialized = true;
     }
 
-    return supabaseClient;
+    return databaseClient;
 }
 
-export function useSupabaseServiceClient(): SupabaseClient<Database> {
-    if (!isSupabaseServiceClientInitialized) {
-        supabaseServiceClient = createClient<Database>(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY, {
-            auth: {
-                autoRefreshToken: true,
-                persistSession: true,
-                detectSessionInUrl: false
-            }
-        });
+export function useDatabaseServiceClient(): AnomieDatabase {
+    if (!isDatabaseServiceClientInitialized) {
+        databaseServiceClient = new AnomieDatabase(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
 
-        isSupabaseServiceClientInitialized = true;
+        isDatabaseServiceClientInitialized = true;
     }
 
-    return supabaseServiceClient;
+    return databaseServiceClient;
 }

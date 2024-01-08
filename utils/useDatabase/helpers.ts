@@ -1,6 +1,7 @@
+import type { Database } from "av-database";
 import type { EmbedStructure } from "lilybird";
 
-export function extractEmbedStructure(embedFromDb: SelectEmbed): { channelId: string, messageId: string | null, name: string, embed: EmbedStructure } {
+export function extractEmbedStructure(embedFromDb: Database.Discord.Embed.Select): { channelId: string, messageId: string | null, name: string, embed: EmbedStructure } {
     const embed: EmbedStructure = {
         title: embedFromDb.title ?? undefined,
         description: embedFromDb.description ?? undefined,

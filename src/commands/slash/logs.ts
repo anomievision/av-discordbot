@@ -1,5 +1,6 @@
-import { useQuerySelectLogs } from "#utils";
+import { useDatabaseServiceClient } from "#utils";
 import { ApplicationCommandOptionType, ApplicationCommandType } from "lilybird";
+import type { Database } from "av-database";
 
 export default {
     post: "GLOBAL",
@@ -30,11 +31,11 @@ export default {
 
         const amount = interaction.data.getInteger("amount") ?? 10;
 
-        const logs = await useQuerySelectLogs(amount);
+        const { data, error } = await useDatabaseServiceClient().discord.log.selectAll(amount);
 
-        if (typeof logs === "string") {
+        if (error) {
             await interaction.editReply({
-                content: logs
+                content: error.message
             });
 
             return;
@@ -43,8 +44,8 @@ export default {
         const timeFormatter = Intl.DateTimeFormat("en-US", { dateStyle: "short", timeStyle: "medium", timeZone: "america/chicago" });
 
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
-        const content: string = logs
-            .map(({ timestamp, category, level, message, context }: SelectLog) => {
+        const content: string = data
+            .map(({ timestamp, category, level, message, context }: Database.Discord.Log.Select) => {
                 const _context = typeof context === "string" && context.length > 0 ? ` - ${context}` : "";
 
                 return `${timeFormatter.format(parseInt(timestamp)).replaceAll(",", " -")} - ${category} - ${level} - ${message}${_context}`;

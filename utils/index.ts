@@ -1,7 +1,7 @@
 export {
     extractEmbedStructure,
-    useSupabaseClient,
-    useSupabaseServiceClient
+    useDatabaseClient,
+    useDatabaseServiceClient
 } from "./useDatabase/index.js";
 
 export {
@@ -38,29 +38,5 @@ export {
 } from "./useLogger/index.js";
 
 export {
-    useQueryCreateEmbed,
-    useQueryUpdateEmbed,
-    useQueryDeleteEmbed,
-    useQuerySelectEmbed,
-    useQuerySelectEmbeds,
-    useQueryCreateLog,
-    useQueryUpdateLog,
-    useQueryDeleteLog,
-    useQuerySelectLog,
-    useQuerySelectLogs,
-    useQuerySelectProfile,
-    useQueryCreateUser,
-    useQueryUpdateUser,
-    useQueryDeleteUser,
-    useQuerySelectUser,
-    useQuerySelectUsers
-} from "./useQuery/index.js";
-
-export {
     useSupportTicket
 } from "./useSupport/index.js";
-
-export {
-    useCamelToSnakeCase,
-    useSnakeToCamelCase
-} from "./useTypescript/index.js";

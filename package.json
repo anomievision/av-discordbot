@@ -18,20 +18,19 @@
   "dependencies": {
     "@linear/sdk": "^13.0.0",
     "@supabase/supabase-js": "^2.39.2",
+    "av-database": "../database",
     "lilybird": "^0.4.4",
     "postgres": "^3.4.3",
     "tasai": "^0.1.0"
   },
   "devDependencies": {
     "@stylistic/eslint-plugin": "^1.5.3",
-    "@typescript-eslint/eslint-plugin": "^6.17.0",
-    "@typescript-eslint/parser": "^6.17.0",
+    "@typescript-eslint/eslint-plugin": "^6.18.0",
+    "@typescript-eslint/parser": "^6.18.0",
     "bun-types": "latest",
-    "camelcase-keys": "^9.1.2",
     "eslint": "^8.56.0",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.29.1",
-    "snakecase-keys": "^5.5.0",
     "typescript": "^5.3.3"
   }
 }

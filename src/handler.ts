@@ -1,4 +1,4 @@
-import { doesDiscordEmbedExist, useLogger, useQuerySelectEmbed, useSupabaseServiceClient } from "#utils";
+import { doesDiscordEmbedExist, useDatabaseServiceClient, useLogger } from "#utils";
 import { ChannelType } from "lilybird";
 import type {
     ClientEventListeners,
@@ -255,47 +255,48 @@ export class Handler {
 
             if (!embedFile.enabled) continue;
 
+            const { data, error } = await useDatabaseServiceClient().discord.embed.selectByMeta({
+                channelId: embedFile.channelId,
+                name: embedFile.name
+            });
+
+            if (error)
+                await useLogger("error", "handler", `Failed to get auto-embed from Database: ${embedFile.name}`);
+
             let message;
 
             try {
-                message = await this.createOrUpdateMessage(client, embedFile);
-            } catch (error: unknown) {
-                await useLogger("error", "handler", `Failed to create or update auto-embed: ${embedFile.name}: ${JSON.stringify(error)}`);
+                message = await this.createOrUpdateMessage(client, data[0].messageId ? data[0].messageId : null, embedFile);
+            } catch (catchError: unknown) {
+                await useLogger("error", "handler", `Failed to create or update auto-embed: ${embedFile.name}: ${JSON.stringify(catchError)}`);
                 continue;
             }
 
             if (message)
-                await this.updateDatabase(embedFile, message.id);
+                await this.updateDatabase(data[0].id, message.id, embedFile);
         }
     }
 
-    private async createOrUpdateMessage(client: Client, embedFile: Handlers.AutoEmbed): Promise<MessageStructure | undefined> {
+    private async createOrUpdateMessage(client: Client, messageId: string | null, embedFile: Handlers.AutoEmbed): Promise<MessageStructure | undefined> {
         let message;
 
-        const queryEmbed = await useQuerySelectEmbed(embedFile.channelId, { name: embedFile.name });
-
-        if (typeof queryEmbed === "string" || !queryEmbed.messageId || !await doesDiscordEmbedExist(client.rest, embedFile.channelId, queryEmbed.messageId)) {
+        if (messageId === null || !await doesDiscordEmbedExist(client.rest, embedFile.channelId, messageId)) {
             message = await client.rest.createMessage(embedFile.channelId, { embeds: embedFile.embeds });
             await useLogger("info", "handler", `Created auto-embed: ${embedFile.name}`);
         } else {
-            await client.rest.editMessage(embedFile.channelId, queryEmbed.messageId, { embeds: embedFile.embeds });
+            await client.rest.editMessage(embedFile.channelId, messageId, { embeds: embedFile.embeds });
             await useLogger("info", "handler", `Updated auto-embed: ${embedFile.name}`);
         }
 
         return message;
     }
 
-    private async updateDatabase(embedFile: Handlers.AutoEmbed, messageId: string): Promise<void> {
-        const { error } = await useSupabaseServiceClient()
-            .schema("discord")
-            .from("embed")
-            .upsert([
-                {
-                    channel_id: embedFile.channelId,
-                    name: embedFile.name,
-                    message_id: messageId
-                }
-            ]);
+    private async updateDatabase(embedId: string, messageId: string, embedFile: Handlers.AutoEmbed): Promise<void> {
+        const { error } = await useDatabaseServiceClient().discord.embed.update(embedId, {
+            channelId: embedFile.channelId,
+            name: embedFile.name,
+            messageId
+        });
 
         if (error)
             await useLogger("error", "handler", `Failed to create or update auto-embed in Database: ${embedFile.name}`);

@@ -1,4 +1,4 @@
-import { useLogger, useSupabaseServiceClient } from "#utils";
+import { useLogger, useDatabaseServiceClient } from "#utils";
 
 async function checkEnvs(): Promise<{ status: "pass" | "fail", error?: string }> {
     const envs = Object.keys(process.env);
@@ -16,10 +16,7 @@ async function checkEnvs(): Promise<{ status: "pass" | "fail", error?: string }>
 }
 
 async function checkDatabaseConnection(): Promise<{ status: "pass" | "fail", error?: string }> {
-    const { error } = await useSupabaseServiceClient()
-        .schema("discord")
-        .from("log")
-        .select("id");
+    const { error } = await useDatabaseServiceClient().discord.log.selectAll(1);
 
     if (error !== null) {
         return {

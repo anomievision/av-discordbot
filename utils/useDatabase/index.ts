@@ -1,6 +1,6 @@
 export {
-    useSupabaseClient,
-    useSupabaseServiceClient
+    useDatabaseClient,
+    useDatabaseServiceClient
 } from "./client.js";
 
 export {
