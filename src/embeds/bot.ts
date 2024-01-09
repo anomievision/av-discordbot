@@ -1,13 +1,13 @@
 export default {
     name: "#bot",
-    channelId: "1189960139063709807",
+    channelId: "1192318477302771772",
     enabled: true,
     embeds: [
         {
             title: "Automated Embed 1",
             description: "This is an automated embed.",
             url: "",
-            timestamp: new Date().toISOString(),
+            timestamp: new Date().getTime().toString(),
             color: 0x2b2d31,
             footer: {
                 text: "",

@@ -177,3 +177,6 @@ dist
 # AnomieVision
 .private
 run.lock
+
+# Development
+snapshots
