@@ -21,7 +21,7 @@ function scheduleMemoryUsageUpdates(interval: number): void {
         const currentMemoryUsage = Math.round(memoryUsage.heapUsed / 1024 / 1024 * 100) / 100;
         const difference = currentMemoryUsage - lastMemoryUsage;
         const sign = difference > 0 ? "+" : "-";
-        const styledDifference = difference > 0 ? `<#FA5A6A>${sign} ${difference.toFixed(2)} MB<r>` : `<#59E37B>${sign} ${difference.toFixed(2)} MB<r>`;
+        const styledDifference = difference > 0 ? `<#FA5A6A>${sign}${difference.toFixed(2)} MB<r>` : `<#59E37B>${difference.toFixed(2)} MB<r>`;
 
         // eslint-disable-next-line require-atomic-updates
         lastMemoryUsage = currentMemoryUsage;
@@ -33,7 +33,7 @@ function scheduleMemoryUsageUpdates(interval: number): void {
 export async function useScheduledTasks(): Promise<void> {
     await useLogger("info", "scheduled", "Starting scheduled tasks");
 
-    scheduleHeapSnapshot(3 * 60 * 60 * 1000);
+    scheduleHeapSnapshot(1 * 60 * 60 * 1000);
 
     scheduleMemoryUsageUpdates(10 * 60 * 1000);
 }
