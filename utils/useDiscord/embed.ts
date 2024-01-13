@@ -1,6 +1,6 @@
 import { useError, useLogger } from "#utils";
+import type { REST } from "lilybird/rest";
 import type { EmbedStructure } from "lilybird";
-import type { REST } from "node_modules/lilybird/dist/rest/rest.js";
 
 export async function useDiscordCreateEmbed(rest: REST, channelId: string, embed: EmbedStructure): Promise<{ data: any, error?: string }> {
     try {
