@@ -1,7 +1,7 @@
 {
-  "name": "av-lilybird-discord-bot",
-  "description": "A custom discord bot",
-  "version": "0.0.1",
+  "name": "av-discordbot",
+  "description": "A custom discord bot (built using Lilybird)",
+  "version": "1.0.0",
   "type": "module",
   "main": "./src/index.ts",
   "scripts": {
@@ -16,20 +16,20 @@
     "supabase:gen-types": "bunx supabase gen types typescript --db-url 'postgresql://postgres:postgres@127.0.0.1:54322/postgres' --schema public,discord > types/supabase.d.ts"
   },
   "dependencies": {
-    "@linear/sdk": "^13.0.0",
+    "@linear/sdk": "^17.0.1",
     "av-database": "../database",
-    "lilybird": "^0.5.0",
+    "lilybird": "^0.5.3",
     "postgres": "^3.4.3",
-    "tasai": "^0.1.0"
+    "tasai": "^1.0.0"
   },
   "devDependencies": {
-    "@stylistic/eslint-plugin": "^1.5.3",
-    "@typescript-eslint/eslint-plugin": "^6.18.1",
-    "@typescript-eslint/parser": "^6.18.1",
+    "@stylistic/eslint-plugin": "^1.6.3",
+    "@typescript-eslint/eslint-plugin": "^7.1.1",
+    "@typescript-eslint/parser": "^7.1.1",
     "bun-types": "latest",
-    "eslint": "^8.56.0",
+    "eslint": "^8.57.0",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.29.1",
-    "typescript": "^5.3.3"
+    "typescript": "^5.4.2"
   }
 }
